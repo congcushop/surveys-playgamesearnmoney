@@ -1,0 +1,100 @@
+/* ==========================================================================
+   SurveyCoins — playful, SliceThePie-like design system
+   Bright, cheerful, game-like. Function first — but the look should make
+   people WANT to tap. Palette: vivid violet + hot pink + sunny amber coins
+   on a soft lavender background. Rounded everything, chunky progress bars.
+   ========================================================================== */
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Nunito', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: linear-gradient(180deg, #f5f3ff 0%, #fdf4ff 45%, #fffbeb 100%);
+  color: #1e1b4b;
+  min-height: 100vh;
+}
+a { text-decoration: none; }
+
+/* --- playful building blocks --- */
+.gradient-text {
+  background: linear-gradient(90deg, #7c3aed, #db2777, #f59e0b);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.btn-gradient {
+  background: linear-gradient(90deg, #7c3aed, #db2777);
+  color: #fff; font-weight: 800;
+  border-radius: 9999px;
+  box-shadow: 0 6px 16px rgba(219, 39, 119, .35);
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.btn-gradient:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 10px 22px rgba(219, 39, 119, .45); }
+.btn-gradient:active { transform: scale(.98); }
+.btn-sunny {
+  background: linear-gradient(90deg, #f59e0b, #f97316);
+  color: #fff; font-weight: 800; border-radius: 9999px;
+  box-shadow: 0 6px 16px rgba(249, 115, 22, .35);
+  transition: transform .12s ease;
+}
+.btn-sunny:hover { transform: translateY(-2px) scale(1.02); }
+.card {
+  background: #fff;
+  border-radius: 1.25rem;
+  border: 1px solid #ede9fe;
+  box-shadow: 0 4px 18px rgba(124, 58, 237, .08);
+}
+.card-hover { transition: transform .15s ease, box-shadow .15s ease; }
+.card-hover:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(124, 58, 237, .16); }
+
+/* Earning cards — the money number is the hero */
+.earn-card { position: relative; overflow: hidden; }
+.earn-card::before {
+  content: ""; position: absolute; inset: 0 0 auto 0; height: 6px;
+  background: linear-gradient(90deg, #7c3aed, #db2777, #f59e0b);
+}
+.earn-amount { font-size: 1.9rem; font-weight: 900; line-height: 1; color: #16a34a; }
+.earn-amount .cur { font-size: 1rem; vertical-align: top; }
+
+/* Chunky game-like progress bars */
+.progress-track {
+  height: 14px; border-radius: 9999px; background: #ede9fe; overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.08);
+}
+.progress-fill {
+  height: 100%; border-radius: 9999px;
+  background: linear-gradient(90deg, #7c3aed, #db2777, #f59e0b);
+  transition: width .6s ease;
+}
+.progress-fill.green { background: linear-gradient(90deg, #16a34a, #4ade80); }
+
+/* Badges & chips */
+.badge {
+  display: inline-flex; align-items: center; gap: .25rem;
+  font-size: .72rem; font-weight: 800; letter-spacing: .02em;
+  padding: .2rem .6rem; border-radius: 9999px;
+}
+.badge-violet { background: #ede9fe; color: #6d28d9; }
+.badge-pink { background: #fce7f3; color: #be185d; }
+.badge-amber { background: #fef3c7; color: #b45309; }
+.badge-green { background: #dcfce7; color: #15803d; }
+.coin-chip {
+  display: inline-flex; align-items: center; gap: .35rem;
+  background: linear-gradient(90deg, #f59e0b, #fbbf24);
+  color: #451a03; font-weight: 900;
+  padding: .35rem .9rem; border-radius: 9999px;
+  box-shadow: 0 3px 10px rgba(245, 158, 11, .4);
+}
+
+/* Floating coin animation (CSS only, subtle) */
+@keyframes coin-bob { 0%,100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-6px) rotate(5deg); } }
+.coin-bob { display: inline-block; animation: coin-bob 2.4s ease-in-out infinite; }
+@keyframes pop-in { from { transform: scale(.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.pop-in { animation: pop-in .25s ease; }
+
+/* Streak flame */
+.streak { font-weight: 900; color: #ea580c; }
+
+.ad-unit, [data-ad-slot] { min-height: 60px; }
+iframe { background: #fff; }
+details summary { cursor: pointer; }
+input, select, textarea { outline: none; border-radius: .75rem; }
+input:focus, select:focus, textarea:focus { border-color: #a78bfa; box-shadow: 0 0 0 3px rgba(167, 139, 250, .3); }
