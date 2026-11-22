@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — SurveyCoins | Your Balance, Levels &amp; Daily Rewards</title>
+<meta name="description" content="Your SurveyCoins dashboard: coin balance, level progress, daily check-in streak, recent earnings and quick links to surveys, games and trials.">
+<meta property="og:title" content="Dashboard — SurveyCoins">
+<meta property="og:description" content="Check your coin balance, level up and grab your daily bonus.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://surveys.playgamesearnmoney.com/dashboard.html">
+<meta property="og:site_name" content="SurveyCoins">
+<link rel="canonical" href="https://surveys.playgamesearnmoney.com/dashboard.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="css/style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<div id="site-header"></div>
+
+<main class="max-w-6xl mx-auto px-4 py-6">
+  <div class="grid gap-4 lg:grid-cols-3">
+    <div class="lg:col-span-2 space-y-4">
+      <!-- BALANCE HERO -->
+      <section class="rounded-3xl p-6 md:p-8 text-white shadow-xl pop-in" style="background: linear-gradient(135deg,#6d28d9,#db2777 60%,#f59e0b)">
+        <div class="text-sm font-bold opacity-90">YOUR BALANCE</div>
+        <div data-balance class="mt-1"></div>
+        <div class="flex flex-wrap gap-2 mt-5">
+          <a href="withdraw.html" class="bg-white text-violet-800 font-extrabold px-5 py-2.5 rounded-full text-sm shadow">Withdraw 💸</a>
+          <a href="surveys.html" class="bg-white/20 text-white font-extrabold px-5 py-2.5 rounded-full text-sm border border-white/40">Take a survey 📋</a>
+        </div>
+      </section>
+
+      <!-- CHECK-IN + LEVEL -->
+      <section class="grid sm:grid-cols-2 gap-4">
+        <div class="card p-5">
+          <div class="flex items-center justify-between">
+            <h3 class="font-black text-lg">🔥 Daily check-in</h3>
+            <span class="badge badge-amber">+10 coins/day</span>
+          </div>
+          <p class="text-sm text-slate-600 mt-1">Come back every day — your streak grows your bonus.</p>
+          <button id="checkin-btn" class="btn-sunny px-5 py-2.5 text-sm mt-3">Check in now</button>
+          <p id="checkin-result" class="text-sm font-bold text-green-600 mt-2"></p>
+        </div>
+        <div class="card p-5">
+          <h3 class="font-black text-lg">🏆 Your level</h3>
+          <p class="text-sm text-slate-600 mt-1">Complete offers to level up and raise your withdrawal limit.</p>
+          <div class="mt-3">
+            <div class="flex justify-between text-xs font-bold text-slate-500 mb-1"><span>Level 1 · Newcomer</span><span>→ Level 2 at $10 earned</span></div>
+            <div class="progress-track"><div class="progress-fill" style="width: 20%"></div></div>
+          </div>
+          <a href="levels.html" class="text-violet-700 font-bold text-sm underline">How levels work →</a>
+        </div>
+      </section>
+
+      <!-- QUICK EARN GRID -->
+      <section>
+        <h2 class="font-black text-2xl mb-3">Earn now ⚡</h2>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <a href="surveys.html" class="card card-hover earn-card p-5 block">
+            <div class="flex justify-between items-start"><span class="text-3xl">📋</span><span class="badge badge-violet">TOP PICK</span></div>
+            <div class="font-black text-lg mt-2">Paid surveys</div>
+            <div class="earn-amount"><span class="cur">$</span>0.30–3 <span class="text-xs font-bold text-slate-500">each · 5–25 min</span></div>
+            <p class="text-sm text-slate-600 mt-1">New surveys all day — the fastest road to your first $5.</p>
+          </a>
+          <a href="games.html" class="card card-hover earn-card p-5 block">
+            <div class="flex justify-between items-start"><span class="text-3xl">🎮</span><span class="badge badge-pink">BIGGEST $</span></div>
+            <div class="font-black text-lg mt-2">Play games</div>
+            <div class="earn-amount"><span class="cur">$</span>3–12 <span class="text-xs font-bold text-slate-500">per game · up to $50+</span></div>
+            <p class="text-sm text-slate-600 mt-1">Install, play, reach a level — the biggest payouts here.</p>
+          </a>
+          <a href="trials.html" class="card card-hover earn-card p-5 block">
+            <div class="flex justify-between items-start"><span class="text-3xl">✨</span><span class="badge badge-amber">FAST CREDIT</span></div>
+            <div class="font-black text-lg mt-2">Free trials</div>
+            <div class="earn-amount"><span class="cur">$</span>1–4 <span class="text-xs font-bold text-slate-500">per sign-up</span></div>
+            <p class="text-sm text-slate-600 mt-1">Try apps free — paid in minutes when it credits.</p>
+          </a>
+          <a href="videos.html" class="card card-hover earn-card p-5 block">
+            <div class="flex justify-between items-start"><span class="text-3xl">🎬</span><span class="badge badge-green">CHILL EARN</span></div>
+            <div class="font-black text-lg mt-2">Rewarded videos</div>
+            <div class="earn-amount"><span class="cur">🪙</span>10 <span class="text-xs font-bold text-slate-500">coins per video</span></div>
+            <p class="text-sm text-slate-600 mt-1">Watch a short video when you feel like it — small bonus coins.</p>
+          </a>
+        </div>
+      </section>
+
+      <!-- RECENT EARNINGS -->
+      <section class="card p-5">
+        <h2 class="font-black text-xl mb-2">Recent earnings</h2>
+        <div data-transactions></div>
+      </section>
+    </div>
+
+    <!-- SIDEBAR -->
+    <aside class="space-y-4">
+      <div class="card p-5">
+        <h3 class="font-black text-lg">👥 Refer &amp; earn 10%</h3>
+        <p class="text-sm text-slate-600 mt-1">Share your link — earn 10% of everything your friends earn, for life.</p>
+        <a href="referral.html" class="btn-gradient inline-block px-5 py-2.5 text-sm mt-3">Get my link →</a>
+      </div>
+      <div class="card p-5">
+        <h3 class="font-black text-lg">💸 Real payouts</h3>
+        <p class="text-sm text-slate-600 mt-1">Every payout we publish is a real, paid withdrawal.</p>
+        <a href="proofs.html" class="text-violet-700 font-bold text-sm underline">See the proof wall →</a>
+      </div>
+      <div data-ad-slot="sidebar"></div>
+      <div class="card p-5">
+        <h3 class="font-black text-lg">🎵 Music lounge</h3>
+        <p class="text-sm text-slate-600 mt-1">Chill with music while you earn — small bonus coins for listening sessions.</p>
+        <a href="music.html" class="text-violet-700 font-bold text-sm underline">Open the lounge →</a>
+      </div>
+      <div data-ad-slot="sidebar2"></div>
+    </aside>
+  </div>
+</main>
+
+<div id="site-footer"></div>
+<script src="js/config.js"></script>
+<script src="js/backend.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/ads.js"></script>
+<script src="js/offerwall.js"></script>
+<script src="js/routers.js"></script>
+<script src="js/push.js"></script>
+<script src="js/rewards.js"></script>
+<script src="js/app.js"></script>
+<script>App.boot({ balance: true, transactions: 10, checkin: true });</script>
+</body>
+</html>

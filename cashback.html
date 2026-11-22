@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cashback Shopping — Earn Coins Back on Purchases | SurveyCoins</title>
+<meta name="description" content="Earn coins back when you shop through SurveyCoins cashback. Shop at partner stores, get a percentage back in coins. Only shop for things you were buying anyway.">
+<meta property="og:title" content="Cashback Shopping — Earn Coins Back on Purchases | SurveyCoins">
+<meta property="og:description" content="Shop partner stores, earn coins back. Real cashback, shared with you.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://surveys.playgamesearnmoney.com/cashback.html">
+<meta property="og:site_name" content="SurveyCoins">
+<link rel="canonical" href="https://surveys.playgamesearnmoney.com/cashback.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="css/style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<div id="site-header"></div>
+
+<main class="max-w-6xl mx-auto px-4 py-6">
+  <section class="rounded-3xl p-6 md:p-8 text-white shadow-xl" style="background: linear-gradient(135deg,#16a34a,#0ea5e9 60%,#7c3aed)">
+    <h1 class="text-3xl md:text-4xl font-black">🛍️ Cashback shopping</h1>
+    <p class="mt-2 font-bold text-white/90 max-w-2xl">Shop at partner stores through SurveyCoins and earn a percentage back in coins. Only buy things you were going to buy anyway — cashback is a bonus, never a reason to spend.</p>
+    <div class="flex flex-wrap gap-2 mt-4">
+      <span class="badge bg-white/20 text-white">💰 Earn back on every order</span>
+      <span class="badge bg-white/20 text-white">🪙 Paid in coins</span>
+      <span class="badge bg-white/20 text-white">🛒 Only shop what you need</span>
+    </div>
+  </section>
+
+  <div class="grid gap-4 lg:grid-cols-3 mt-4">
+    <div class="lg:col-span-2 space-y-4">
+      <div data-balance class="card p-5"></div>
+      <section class="card p-6">
+        <h2 class="font-black text-xl mb-1">Partner stores</h2>
+        <p class="text-sm text-slate-600">Cashback rates are set by each store. Click a store, shop as normal, and your coins arrive after the order is confirmed (usually 7–30 days, after the return window closes).</p>
+        <div id="cashback-stores" class="grid sm:grid-cols-2 gap-4 mt-4"></div>
+      </section>
+      <section class="card p-5">
+        <h2 class="font-black text-xl">💡 Honest note</h2>
+        <p class="text-sm text-slate-600 mt-1">Cashback only pays when a real purchase is confirmed — returns and cancellations don't earn. Never buy something just for the cashback; the math doesn't work. Surveys and games are the way to earn without spending.</p>
+      </section>
+      <div data-ad-slot="incontent"></div>
+    </div>
+    <aside class="space-y-4">
+      <div class="card p-5">
+        <h3 class="font-black text-lg">⚡ Earn faster (free)</h3>
+        <div class="text-sm mt-2 space-y-2">
+          <div class="flex justify-between"><span>📋 Survey</span><b class="text-green-600">$0.30–$3</b></div>
+          <div class="flex justify-between"><span>🎮 Game</span><b class="text-green-600">$3–$12</b></div>
+          <div class="flex justify-between"><span>✨ Trial</span><b class="text-green-600">$1–$4</b></div>
+        </div>
+      </div>
+      <div data-ad-slot="sidebar"></div>
+    </aside>
+  </div>
+</main>
+
+<div id="site-footer"></div>
+<script src="js/config.js"></script>
+<script src="js/backend.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/ads.js"></script>
+<script src="js/offerwall.js"></script>
+<script src="js/routers.js"></script>
+<script src="js/push.js"></script>
+<script src="js/rewards.js"></script>
+<script src="js/app.js"></script>
+<script>
+App.boot({ balance: true });
+(function () {
+  // Stores render ONLY from real affiliate deals in js/config.js (cashback.stores).
+  // No store is ever listed without a live affiliate link — no fake stores.
+  const box = document.getElementById('cashback-stores');
+  const stores = window.SITE_CONFIG.cashback.stores || [];
+  if (!stores.length) {
+    box.innerHTML = `<div class="sm:col-span-2 border border-dashed border-slate-300 rounded-xl p-8 text-center bg-slate-50">
+      <div class="text-2xl mb-2">🛍️</div>
+      <p class="font-bold text-slate-700">Partner stores are being added</p>
+      <p class="text-sm text-slate-500 mt-1">Cashback deals are being set up with affiliate partners. Check back soon — surveys, games and trials are live now.</p>
+    </div>`;
+    return;
+  }
+  box.innerHTML = stores.map(s => `
+    <a href="${s.affiliateUrl}" target="_blank" rel="sponsored noopener" class="card card-hover p-5 block">
+      <div class="font-black text-lg">${s.name}</div>
+      <div class="earn-amount mt-1">${s.cashbackPct}% <span class="text-sm font-bold text-slate-500">cashback</span></div>
+      <span class="text-violet-700 font-bold text-sm">Shop now →</span>
+    </a>`).join('');
+})();
+</script>
+</body>
+</html>

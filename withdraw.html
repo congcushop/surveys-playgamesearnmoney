@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Withdraw — Cash Out $5 PayPal / $1 Crypto | SurveyCoins</title>
+<meta name="description" content="Cash out your SurveyCoins earnings: $5 minimum via PayPal, $1 via crypto (LTC/USDT). First withdrawals are manually reviewed within 24–72 hours; payouts run Tuesdays and Fridays.">
+<meta property="og:title" content="Withdraw — Cash Out $5 PayPal / $1 Crypto | SurveyCoins">
+<meta property="og:description" content="Request your payout. First withdrawal reviewed in 24–72h, batches Tue &amp; Fri.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://surveys.playgamesearnmoney.com/withdraw.html">
+<meta property="og:site_name" content="SurveyCoins">
+<link rel="canonical" href="https://surveys.playgamesearnmoney.com/withdraw.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="css/style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<div id="site-header"></div>
+
+<main class="max-w-6xl mx-auto px-4 py-6">
+  <div class="grid gap-4 lg:grid-cols-3">
+    <div class="lg:col-span-2 space-y-4">
+      <section class="rounded-3xl p-6 md:p-8 text-white shadow-xl pop-in" style="background: linear-gradient(135deg,#16a34a,#0ea5e9 60%,#7c3aed)">
+        <div class="text-sm font-bold opacity-90">YOUR BALANCE</div>
+        <div data-balance class="mt-1"></div>
+        <p class="text-sm font-bold text-white/90 mt-3">💸 Payouts are processed in batches on <b>Tuesdays and Fridays</b>. First withdrawal: manual review within 24–72 hours. No fees to request — PayPal takes its usual ~2% on its side.</p>
+      </section>
+
+      <section class="card p-6">
+        <h2 class="font-black text-2xl">Request a withdrawal</h2>
+        <form id="withdraw-form" class="mt-4 space-y-4 max-w-md">
+          <div>
+            <label class="font-bold text-sm" for="wd-method">Payout method</label>
+            <select id="wd-method" class="w-full border border-slate-300 px-4 py-3 mt-1">
+              <option value="paypal">PayPal — minimum $5</option>
+              <option value="crypto_ltc">Crypto — Litecoin (LTC) — minimum $1</option>
+              <option value="crypto_usdt">Crypto — USDT — minimum $1</option>
+            </select>
+          </div>
+          <div>
+            <label class="font-bold text-sm" for="wd-amount">Amount (USD)</label>
+            <input id="wd-amount" type="number" min="1" step="0.5" placeholder="5.00" class="w-full border border-slate-300 px-4 py-3 mt-1">
+            <p class="text-xs text-slate-500 mt-1">Your level caps each withdrawal — see <a class="underline" href="levels.html">levels</a>. Amounts are taken from your coin balance (1,000 coins = $1).</p>
+          </div>
+          <div>
+            <label class="font-bold text-sm" for="wd-address">PayPal email / crypto wallet address</label>
+            <input id="wd-address" type="text" placeholder="you@example.com or LTC/USDT address" class="w-full border border-slate-300 px-4 py-3 mt-1">
+          </div>
+          <button type="submit" class="btn-gradient px-8 py-3 text-base w-full sm:w-auto">Request withdrawal 💸</button>
+          <p id="wd-result" class="text-sm font-bold"></p>
+        </form>
+      </section>
+
+      <section class="card p-6">
+        <h2 class="font-black text-xl">Your withdrawal requests</h2>
+        <div id="wd-history" class="mt-2 text-sm text-slate-500">Sign in to see your withdrawal history.</div>
+      </section>
+    </div>
+
+    <aside class="space-y-4">
+      <div class="card p-5">
+        <h3 class="font-black text-lg">🏆 Your level</h3>
+        <div id="wd-level" class="text-sm text-slate-600 mt-1"></div>
+        <a href="levels.html" class="text-violet-700 font-bold text-sm underline">How levels work →</a>
+      </div>
+      <div class="card p-5">
+        <h3 class="font-black text-lg">📅 Payout schedule</h3>
+        <ul class="text-sm text-slate-600 mt-2 space-y-1">
+          <li>✅ Request anytime (min $5 PayPal / $1 crypto)</li>
+          <li>🔍 First withdrawal: manual review, 24–72h</li>
+          <li>📦 Payouts processed Tue &amp; Fri</li>
+          <li>🛡️ Daily payout cap keeps payouts funded</li>
+        </ul>
+      </div>
+      <div data-ad-slot="sidebar"></div>
+    </aside>
+  </div>
+</main>
+
+<div id="site-footer"></div>
+<script src="js/config.js"></script>
+<script src="js/backend.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/ads.js"></script>
+<script src="js/offerwall.js"></script>
+<script src="js/routers.js"></script>
+<script src="js/push.js"></script>
+<script src="js/rewards.js"></script>
+<script src="js/app.js"></script>
+<script>
+App.boot({ balance: true });
+(async function () {
+  const lvl = await Backend.getLevelInfo();
+  const el = document.getElementById('wd-level');
+  if (el) el.innerHTML = `Level ${lvl.current.level} · <b>${lvl.current.name}</b> — up to <b>$${lvl.current.maxWithdrawUsd}</b> per withdrawal. ${lvl.next ? `Earn $${((lvl.next.minCoinsEarned - lvl.lifetimeCoins) / 1000).toFixed(2)} more for Level ${lvl.next.level} ($${lvl.next.maxWithdrawUsd}).` : 'Top level reached.'}`;
+  const hist = await Backend.getWithdrawals();
+  const histEl = document.getElementById('wd-history');
+  if (histEl) {
+    if (!hist.connected) histEl.textContent = 'Withdrawal history will show here once the backend is live.';
+    else if (!hist.rows.length) histEl.textContent = 'No withdrawal requests yet.';
+    else histEl.innerHTML = hist.rows.map(w => `<div class="flex justify-between py-2 border-b border-slate-100"><span>$${Number(w.amount_usd).toFixed(2)} via ${w.method}</span><span class="badge ${w.status === 'paid' ? 'badge-green' : 'badge-amber'}">${w.status}</span></div>`).join('');
+  }
+  const form = document.getElementById('withdraw-form');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const out = document.getElementById('wd-result');
+    const res = await Backend.requestWithdrawal({
+      method: document.getElementById('wd-method').value,
+      amountUsd: parseFloat(document.getElementById('wd-amount').value),
+      address: document.getElementById('wd-address').value.trim(),
+    });
+    out.textContent = res.ok ? ('✓ ' + (res.note || 'Request received.')) : ('✕ ' + (res.error || 'Request failed.'));
+    out.className = 'text-sm font-bold ' + (res.ok ? 'text-green-600' : 'text-red-500');
+    if (res.ok) { await Rewards.renderBalance('[data-balance]'); form.reset(); }
+  });
+})();
+</script>
+</body>
+</html>

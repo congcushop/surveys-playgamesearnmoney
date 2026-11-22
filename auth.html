@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Join Free / Sign In — SurveyCoins</title>
+<meta name="description" content="Create your free SurveyCoins account or sign in. Start earning coins for surveys, games and trials — cash out from $5 PayPal or $1 crypto.">
+<meta property="og:title" content="Join Free / Sign In — SurveyCoins">
+<meta property="og:description" content="Free account, 30 seconds, start earning.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://surveys.playgamesearnmoney.com/auth.html">
+<meta property="og:site_name" content="SurveyCoins">
+<link rel="canonical" href="https://surveys.playgamesearnmoney.com/auth.html">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="css/style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<div id="site-header"></div>
+
+<main class="max-w-md mx-auto px-4 py-10">
+  <section class="card p-6 md:p-8 pop-in">
+    <div class="text-center">
+      <span class="text-4xl coin-bob inline-block">🪙</span>
+      <h1 class="text-2xl font-black mt-2">Join <span class="gradient-text">SurveyCoins</span> free</h1>
+      <p class="text-sm text-slate-600 mt-1">30 seconds. Get <b>250 bonus coins</b> — unlocked when you finish your first offer.</p>
+    </div>
+    <form id="auth-form" class="mt-6 space-y-4">
+      <div>
+        <label class="font-bold text-sm" for="auth-email">Email</label>
+        <input id="auth-email" type="email" required placeholder="you@example.com" class="w-full border border-slate-300 px-4 py-3 mt-1">
+      </div>
+      <div>
+        <label class="font-bold text-sm" for="auth-password">Password</label>
+        <input id="auth-password" type="password" required minlength="8" placeholder="At least 8 characters" class="w-full border border-slate-300 px-4 py-3 mt-1">
+      </div>
+      <button type="submit" id="auth-submit" class="btn-gradient w-full py-3.5 text-base">Create free account 🎉</button>
+      <p id="auth-result" class="text-sm font-bold text-center"></p>
+    </form>
+    <p class="text-center text-sm mt-4"><button id="auth-toggle" class="text-violet-700 font-bold underline">Already have an account? Sign in</button></p>
+    <p class="text-xs text-slate-500 text-center mt-4">By joining you agree to the <a class="underline" href="terms.html">Terms of Service</a> and <a class="underline" href="privacy.html">Privacy Policy</a>. Must be 18 or older. One account per person.</p>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+<script src="js/config.js"></script>
+<script src="js/backend.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/ads.js"></script>
+<script src="js/offerwall.js"></script>
+<script src="js/routers.js"></script>
+<script src="js/push.js"></script>
+<script src="js/rewards.js"></script>
+<script src="js/app.js"></script>
+<script>
+App.boot({});
+(function () {
+  let mode = 'signup';
+  const form = document.getElementById('auth-form');
+  const submit = document.getElementById('auth-submit');
+  const toggle = document.getElementById('auth-toggle');
+  const out = document.getElementById('auth-result');
+  toggle.addEventListener('click', () => {
+    mode = mode === 'signup' ? 'signin' : 'signup';
+    submit.textContent = mode === 'signup' ? 'Create free account 🎉' : 'Sign in →';
+    toggle.textContent = mode === 'signup' ? 'Already have an account? Sign in' : 'New here? Create a free account';
+  });
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    out.textContent = 'Working…';
+    const email = document.getElementById('auth-email').value.trim();
+    const password = document.getElementById('auth-password').value;
+    const res = mode === 'signup' ? await Backend.signUp(email, password) : await Backend.signIn(email, password);
+    if (res.ok) {
+      out.textContent = '✓ Welcome! Taking you to your dashboard…';
+      out.className = 'text-sm font-bold text-center text-green-600';
+      setTimeout(() => location.href = 'dashboard.html', 900);
+    } else {
+      out.textContent = '✕ ' + (res.error || 'Something went wrong.');
+      out.className = 'text-sm font-bold text-center text-red-500';
+    }
+  });
+  // Referral code from ?ref= — stored for attribution at signup (backend).
+  const ref = new URLSearchParams(location.search).get('ref');
+  if (ref) { try { localStorage.setItem('sc_ref', ref); } catch (e) {} }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Refer Friends &amp; Earn 10% for Life | SurveyCoins</title>
+<meta name="description" content="Invite friends to SurveyCoins and earn 10% of everything they earn, for life — paid from our share, never from theirs. Share your link anywhere.">
+<meta property="og:title" content="Refer Friends &amp; Earn 10% for Life | SurveyCoins">
+<meta property="og:description" content="Share your link, earn 10% of your friends' earnings forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://surveys.playgamesearnmoney.com/referral.html">
+<meta property="og:site_name" content="SurveyCoins">
+<link rel="canonical" href="https://surveys.playgamesearnmoney.com/referral.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="css/style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<div id="site-header"></div>
+
+<main class="max-w-6xl mx-auto px-4 py-6">
+  <section class="rounded-3xl p-6 md:p-8 text-white shadow-xl text-center" style="background: linear-gradient(135deg,#db2777,#7c3aed 60%,#0ea5e9)">
+    <h1 class="text-3xl md:text-4xl font-black">👥 Refer friends, earn 10% for life</h1>
+    <p class="mt-2 font-bold text-white/90 max-w-xl mx-auto">Share your link. When a friend joins and earns, you get 10% of their earnings — paid from <b>our</b> share, never from theirs. Your friend still gets their full 60%.</p>
+  </section>
+
+  <div class="grid gap-4 md:grid-cols-3 mt-4">
+    <div class="card p-6 md:col-span-2">
+      <h2 class="font-black text-xl">Your referral link</h2>
+      <div class="flex flex-wrap gap-2 mt-3">
+        <input id="ref-link" readonly class="flex-1 min-w-[220px] border border-slate-300 px-4 py-3 font-bold text-sm" value="Sign in to get your referral link.">
+        <button id="ref-copy" class="btn-gradient px-6 py-3 text-sm">Copy link 📋</button>
+      </div>
+      <div class="grid grid-cols-3 gap-3 mt-6 text-center">
+        <div class="bg-violet-50 rounded-2xl p-4"><div id="ref-count" class="text-2xl font-black">0</div><div class="text-xs font-bold text-slate-500">FRIENDS JOINED</div></div>
+        <div class="bg-violet-50 rounded-2xl p-4"><div id="ref-earned" class="text-2xl font-black">0</div><div class="text-xs font-bold text-slate-500">COINS EARNED</div></div>
+        <div class="bg-violet-50 rounded-2xl p-4"><div class="text-2xl font-black">10%</div><div class="text-xs font-bold text-slate-500">FOREVER RATE</div></div>
+      </div>
+      <p class="text-xs text-slate-500 mt-4">Your code: <b id="ref-code">—</b>. Referral earnings are credited automatically when your referrals complete offers. No limit on how many friends you invite. Fake referrals, bots and self-referrals are banned and forfeit earnings.</p>
+    </div>
+    <div class="card p-6">
+      <h2 class="font-black text-xl">💡 Where to share</h2>
+      <ul class="text-sm text-slate-600 mt-2 space-y-2 list-disc pl-5">
+        <li>Friends who already do surveys or play mobile games.</li>
+        <li>Your social posts — with an honest line about what it pays.</li>
+        <li>Never spam: don't DM strangers or post where referrals are banned (like r/beermoney without following its rules).</li>
+      </ul>
+    </div>
+  </div>
+</main>
+
+<div id="site-footer"></div>
+<script src="js/config.js"></script>
+<script src="js/backend.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/ads.js"></script>
+<script src="js/offerwall.js"></script>
+<script src="js/routers.js"></script>
+<script src="js/push.js"></script>
+<script src="js/rewards.js"></script>
+<script src="js/app.js"></script>
+<script>App.boot({ referral: true });</script>
+</body>
+</html>

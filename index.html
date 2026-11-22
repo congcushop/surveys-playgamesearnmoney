@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SurveyCoins — Get Paid for Surveys, Games &amp; Trials | Earn Real Cash</title>
+<meta name="description" content="SurveyCoins pays you real money for answering surveys, playing games and trying apps. Surveys pay $0.30–$3 each, games up to $50+. Cash out from $5 via PayPal or $1 in crypto. Free to join, 18+.">
+<meta property="og:title" content="SurveyCoins — Get Paid for Surveys, Games &amp; Trials">
+<meta property="og:description" content="Answer surveys, play games, try apps — earn coins and cash out real money. 1,000 coins = $1. Free to join.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://surveys.playgamesearnmoney.com/">
+<meta property="og:site_name" content="SurveyCoins">
+<link rel="canonical" href="https://surveys.playgamesearnmoney.com/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="css/style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<div id="site-header"></div>
+
+<main class="max-w-6xl mx-auto px-4">
+  <!-- HERO -->
+  <section class="text-center py-10 md:py-14">
+    <span class="badge badge-pink text-sm px-3 py-1">🎉 Free to join · 18+ · Real cash payouts</span>
+    <h1 class="text-4xl md:text-6xl font-black mt-4 leading-tight">Get paid for<br><span class="gradient-text">your opinions.</span></h1>
+    <p class="text-lg md:text-xl text-violet-900/70 mt-4 max-w-2xl mx-auto font-bold">Answer surveys, play games, try new apps — earn coins and cash out real money. <span class="text-violet-900">1,000 coins = $1.</span></p>
+    <div class="flex flex-wrap justify-center gap-3 mt-6">
+      <a href="auth.html" class="btn-gradient px-8 py-3.5 text-lg">Start earning — it's free 🚀</a>
+      <a href="proofs.html" class="bg-white font-extrabold px-8 py-3.5 rounded-full text-lg shadow text-violet-700 border border-violet-200">See real payouts 💸</a>
+    </div>
+    <p class="text-sm text-violet-900/60 mt-4 font-bold">No fees to join · Cash out from $5 PayPal / $1 crypto · We share 60% of every offer with you</p>
+  </section>
+
+  <!-- EARNING CARDS -->
+  <section class="grid gap-4 md:grid-cols-3">
+    <a href="surveys.html" class="card card-hover earn-card p-6 block pop-in">
+      <div class="text-4xl mb-2">📋</div>
+      <div class="font-black text-xl">Paid surveys</div>
+      <div class="earn-amount mt-2"><span class="cur">$</span>0.30–3 <span class="text-sm font-bold text-slate-500">per survey</span></div>
+      <p class="text-sm text-slate-600 mt-2">Our #1 way to earn — new surveys all day, most take 5–25 minutes. Fastest way to your first cashout.</p>
+      <span class="badge badge-violet mt-3">MOST POPULAR</span>
+    </a>
+    <a href="games.html" class="card card-hover earn-card p-6 block pop-in">
+      <div class="text-4xl mb-2">🎮</div>
+      <div class="font-black text-xl">Play games</div>
+      <div class="earn-amount mt-2"><span class="cur">$</span>3–12 <span class="text-sm font-bold text-slate-500">per game · up to $50+</span></div>
+      <p class="text-sm text-slate-600 mt-2">Install a game, reach a level, get paid. The biggest payouts on the site — casual play over a few days.</p>
+      <span class="badge badge-pink mt-3">BIGGEST PAYOUTS</span>
+    </a>
+    <a href="trials.html" class="card card-hover earn-card p-6 block pop-in">
+      <div class="text-4xl mb-2">✨</div>
+      <div class="font-black text-xl">Free trials</div>
+      <div class="earn-amount mt-2"><span class="cur">$</span>1–4 <span class="text-sm font-bold text-slate-500">per sign-up</span></div>
+      <p class="text-sm text-slate-600 mt-2">Try a streaming, fitness or finance app free — get paid in minutes when it credits. No purchase needed.</p>
+      <span class="badge badge-amber mt-3">FASTEST CREDIT</span>
+    </a>
+  </section>
+
+  <div data-ad-slot="incontent" class="my-6"></div>
+
+  <!-- HOW IT WORKS -->
+  <section class="card p-6 md:p-8 mt-4">
+    <h2 class="text-2xl font-black text-center">How it works <span class="text-2xl">🪙</span></h2>
+    <div class="grid md:grid-cols-3 gap-6 mt-6 text-center">
+      <div>
+        <div class="text-4xl font-black gradient-text">1</div>
+        <div class="font-extrabold mt-2">Join free in 30 seconds</div>
+        <p class="text-sm text-slate-600 mt-1">Just an email. Get 250 bonus coins — unlocked when you finish your first offer.</p>
+      </div>
+      <div>
+        <div class="text-4xl font-black gradient-text">2</div>
+        <div class="font-extrabold mt-2">Do surveys, games &amp; trials</div>
+        <p class="text-sm text-slate-600 mt-1">Pick what you like. Coins land in your balance automatically when offers complete.</p>
+      </div>
+      <div>
+        <div class="text-4xl font-black gradient-text">3</div>
+        <div class="font-extrabold mt-2">Cash out real money</div>
+        <p class="text-sm text-slate-600 mt-1">$5 PayPal or $1 crypto. Level up to raise your per-withdrawal limit. Payouts run Tue &amp; Fri.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST / LEVELS TEASER -->
+  <section class="grid md:grid-cols-2 gap-4 mt-4">
+    <div class="card p-6">
+      <h3 class="font-black text-xl">🏆 Level up, withdraw more</h3>
+      <p class="text-sm text-slate-600 mt-1">New members withdraw up to $5 per request. Earn $10 from offers → Level 2 ($10). Earn $50 → Level 3 ($25). Your progress bar is always visible.</p>
+      <div class="mt-4">
+        <div class="flex justify-between text-xs font-bold text-slate-500 mb-1"><span>Level 1 · Newcomer</span><span>Earn $10 → Level 2</span></div>
+        <div class="progress-track"><div class="progress-fill" style="width: 12%"></div></div>
+      </div>
+      <a href="levels.html" class="text-violet-700 font-bold text-sm underline">See all levels →</a>
+    </div>
+    <div class="card p-6">
+      <h3 class="font-black text-xl">🔥 Daily streaks pay off</h3>
+      <p class="text-sm text-slate-600 mt-1">Check in every day for bonus coins, and invite friends — you earn 10% of everything your referrals earn, for life, paid from our share.</p>
+      <div class="flex gap-2 mt-4">
+        <a href="referral.html" class="btn-sunny px-5 py-2.5 text-sm">Invite friends →</a>
+        <a href="dashboard.html" class="bg-violet-100 text-violet-800 font-extrabold px-5 py-2.5 rounded-full text-sm">Daily check-in</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="card p-6 md:p-8 mt-4">
+    <h2 class="text-2xl font-black">Questions, answered honestly</h2>
+    <div class="mt-4 space-y-3 text-sm">
+      <details class="border border-violet-100 rounded-xl p-4 bg-violet-50/50"><summary class="font-extrabold">Is SurveyCoins really free?</summary><p class="text-slate-600 mt-2">Yes — joining and earning are free. We make money from advertisers; you get 60% of what each offer pays us. We never charge you to withdraw.</p></details>
+      <details class="border border-violet-100 rounded-xl p-4 bg-violet-50/50"><summary class="font-extrabold">How much can I actually earn?</summary><p class="text-slate-600 mt-2">It depends on how much you do. Surveys pay $0.30–$3, games $3–$12 (up to $50+ for big milestones), trials $1–$4. Most casual users earn a few dollars a week; heavy users earn more. We never promise a fixed income.</p></details>
+      <details class="border border-violet-100 rounded-xl p-4 bg-violet-50/50"><summary class="font-extrabold">When do I get paid?</summary><p class="text-slate-600 mt-2">Request a withdrawal at $5 (PayPal) or $1 (crypto). First withdrawals are manually reviewed within 24–72 hours; payouts are processed in batches on Tuesdays and Fridays.</p></details>
+      <details class="border border-violet-100 rounded-xl p-4 bg-violet-50/50"><summary class="font-extrabold">Why do some surveys disqualify me?</summary><p class="text-slate-600 mt-2">Advertisers want specific people (age, location, habits). About 1 in 5 surveys screen out — that's normal on every survey site. Try another one; new surveys arrive all day.</p></details>
+    </div>
+  </section>
+
+  <div data-ad-slot="footer" class="my-6"></div>
+</main>
+
+<div id="site-footer"></div>
+<script src="js/config.js"></script>
+<script src="js/backend.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/ads.js"></script>
+<script src="js/offerwall.js"></script>
+<script src="js/routers.js"></script>
+<script src="js/push.js"></script>
+<script src="js/rewards.js"></script>
+<script src="js/app.js"></script>
+<script>App.boot({});</script>
+</body>
+</html>

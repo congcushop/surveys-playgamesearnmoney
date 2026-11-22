@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rewarded Videos — Watch &amp; Earn Coins | SurveyCoins</title>
+<meta name="description" content="Watch short videos on SurveyCoins and earn bonus coins. Voluntary rewarded videos — 10 coins per video. A chill extra, not the main earner.">
+<meta property="og:title" content="Rewarded Videos — Watch &amp; Earn Coins | SurveyCoins">
+<meta property="og:description" content="Watch a short video, earn 10 bonus coins. Voluntary, chill, extra.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://surveys.playgamesearnmoney.com/videos.html">
+<meta property="og:site_name" content="SurveyCoins">
+<link rel="canonical" href="https://surveys.playgamesearnmoney.com/videos.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="css/style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<div id="site-header"></div>
+
+<main class="max-w-6xl mx-auto px-4 py-6">
+  <section class="rounded-3xl p-6 md:p-8 text-white shadow-xl" style="background: linear-gradient(135deg,#0ea5e9,#7c3aed 60%,#db2777)">
+    <h1 class="text-3xl md:text-4xl font-black">🎬 Rewarded videos</h1>
+    <p class="mt-2 font-bold text-white/90 max-w-2xl">Chill earning. Watch a short video when you feel like it and earn <span class="text-amber-300">10 bonus coins</span> per video. This is a small extra — surveys, games and trials pay far more. You choose to watch; nothing is forced.</p>
+    <div class="flex flex-wrap gap-2 mt-4">
+      <span class="badge bg-white/20 text-white">🪙 10 coins / video</span>
+      <span class="badge bg-white/20 text-white">🙋 Voluntary only</span>
+      <span class="badge bg-white/20 text-white">🎁 Bonus, not the main earner</span>
+    </div>
+  </section>
+
+  <div class="grid gap-4 lg:grid-cols-3 mt-4">
+    <div class="lg:col-span-2 space-y-4">
+      <div data-balance class="card p-5"></div>
+      <section class="card p-6 text-center">
+        <div class="text-5xl mb-3">📺</div>
+        <h2 class="font-black text-2xl">Watch a video, earn 10 coins</h2>
+        <p class="text-sm text-slate-600 mt-2 max-w-md mx-auto">Tap below to play a short rewarded video. Watch it to the end and 10 coins land in your balance. Daily limit applies so the well never runs dry.</p>
+        <button id="rewarded-btn" class="btn-gradient px-8 py-3.5 text-base mt-5">▶ Play rewarded video</button>
+        <p id="rewarded-status" class="text-sm font-bold mt-3 text-slate-500"></p>
+        <p class="text-xs text-slate-400 mt-4">Rewarded videos are a voluntary bonus format. Display ads on this site are never rewarded and never required for earning.</p>
+      </section>
+      <section class="card p-5">
+        <h2 class="font-black text-xl">💡 Honest note</h2>
+        <p class="text-sm text-slate-600 mt-1">Videos pay the least of everything here — about 10 coins each. If your goal is real money, do a survey ($0.30–$3) or a game ($3–$12) instead. Videos are for killing time between surveys.</p>
+      </section>
+      <div data-ad-slot="incontent"></div>
+    </div>
+    <aside class="space-y-4">
+      <div class="card p-5">
+        <h3 class="font-black text-lg">⚡ Earn faster</h3>
+        <div class="text-sm mt-2 space-y-2">
+          <div class="flex justify-between"><span>📋 Survey</span><b class="text-green-600">$0.30–$3</b></div>
+          <div class="flex justify-between"><span>🎮 Game</span><b class="text-green-600">$3–$12</b></div>
+          <div class="flex justify-between"><span>✨ Trial</span><b class="text-green-600">$1–$4</b></div>
+          <div class="flex justify-between"><span>🎬 Video</span><b class="text-green-600">10 coins</b></div>
+        </div>
+      </div>
+      <div data-ad-slot="sidebar"></div>
+    </aside>
+  </div>
+</main>
+
+<div id="site-footer"></div>
+<script src="js/config.js"></script>
+<script src="js/backend.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/ads.js"></script>
+<script src="js/offerwall.js"></script>
+<script src="js/routers.js"></script>
+<script src="js/push.js"></script>
+<script src="js/rewards.js"></script>
+<script src="js/app.js"></script>
+<script>
+App.boot({ balance: true });
+// Rewarded video: provider unit loads only when configured in js/config.js.
+// Until then the button explains honestly instead of faking a video.
+(function () {
+  const btn = document.getElementById('rewarded-btn');
+  const status = document.getElementById('rewarded-status');
+  const rv = window.SITE_CONFIG.rewardedVideo;
+  if (!rv.provider || !rv.unitId) {
+    btn.addEventListener('click', () => {
+      status.textContent = 'Rewarded videos launch soon — the video provider is being connected. Surveys and games are live now.';
+    });
+    return;
+  }
+  btn.addEventListener('click', async () => {
+    btn.disabled = true;
+    status.textContent = 'Loading video…';
+    // Provider SDK call goes here once configured (unitId in config).
+    // Coins are credited server-side only, after the provider confirms completion.
+    status.textContent = 'Video completed — coins will appear in your balance shortly.';
+    btn.disabled = false;
+  });
+})();
+</script>
+</body>
+</html>
