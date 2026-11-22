@@ -14,14 +14,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css?v=3">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 <div id="site-header"></div>
 
 <main class="max-w-6xl mx-auto px-4 py-6">
-  <section class="rounded-3xl p-6 md:p-8 text-white shadow-xl" style="background: linear-gradient(135deg,#16a34a,#0ea5e9 60%,#7c3aed)">
+  <section class="rounded-3xl p-6 md:p-8 text-white shadow-xl" style="background: linear-gradient(135deg,#0f766e,#059669 60%,#10b981)">
     <h1 class="text-3xl md:text-4xl font-black">🛍️ Cashback shopping</h1>
     <p class="mt-2 font-bold text-white/90 max-w-2xl">Shop at partner stores through SurveyCoins and earn a percentage back in coins. Only buy things you were going to buy anyway — cashback is a bonus, never a reason to spend.</p>
     <div class="flex flex-wrap gap-2 mt-4">
@@ -88,7 +88,7 @@ App.boot({ balance: true });
     <a href="${s.affiliateUrl}" target="_blank" rel="sponsored noopener" class="card card-hover p-5 block">
       <div class="font-black text-lg">${s.name}</div>
       <div class="earn-amount mt-1">${s.cashbackPct}% <span class="text-sm font-bold text-slate-500">cashback</span></div>
-      <span class="text-violet-700 font-bold text-sm">Shop now →</span>
+      <span class="text-emerald-700 font-bold text-sm">Shop now →</span>
     </a>`).join('');
 })();
 </script>

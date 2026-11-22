@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Withdraw — Cash Out $5 PayPal / $1 Crypto | SurveyCoins</title>
-<meta name="description" content="Cash out your SurveyCoins earnings: $5 minimum via PayPal, $1 via crypto (LTC/USDT). First withdrawals are manually reviewed within 24–72 hours; payouts run Tuesdays and Fridays.">
-<meta property="og:title" content="Withdraw — Cash Out $5 PayPal / $1 Crypto | SurveyCoins">
+<title>Withdraw — Cash Out $10 PayPal / $3 Crypto | SurveyCoins</title>
+<meta name="description" content="Cash out your SurveyCoins earnings: $10 minimum via PayPal, $3 via crypto (LTC/USDT). First withdrawals are manually reviewed within 24–72 hours; payouts run Tuesdays and Fridays.">
+<meta property="og:title" content="Withdraw — Cash Out $10 PayPal / $3 Crypto | SurveyCoins">
 <meta property="og:description" content="Request your payout. First withdrawal reviewed in 24–72h, batches Tue &amp; Fri.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://surveys.playgamesearnmoney.com/withdraw.html">
@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css?v=3">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
@@ -23,7 +23,7 @@
 <main class="max-w-6xl mx-auto px-4 py-6">
   <div class="grid gap-4 lg:grid-cols-3">
     <div class="lg:col-span-2 space-y-4">
-      <section class="rounded-3xl p-6 md:p-8 text-white shadow-xl pop-in" style="background: linear-gradient(135deg,#16a34a,#0ea5e9 60%,#7c3aed)">
+      <section class="rounded-3xl p-6 md:p-8 text-white shadow-xl pop-in" style="background: linear-gradient(135deg,#059669,#0d9488 60%,#0f766e)">
         <div class="text-sm font-bold opacity-90">YOUR BALANCE</div>
         <div data-balance class="mt-1"></div>
         <p class="text-sm font-bold text-white/90 mt-3">💸 Payouts are processed in batches on <b>Tuesdays and Fridays</b>. First withdrawal: manual review within 24–72 hours. No fees to request — PayPal takes its usual ~2% on its side.</p>
@@ -35,14 +35,14 @@
           <div>
             <label class="font-bold text-sm" for="wd-method">Payout method</label>
             <select id="wd-method" class="w-full border border-slate-300 px-4 py-3 mt-1">
-              <option value="paypal">PayPal — minimum $5</option>
-              <option value="crypto_ltc">Crypto — Litecoin (LTC) — minimum $1</option>
-              <option value="crypto_usdt">Crypto — USDT — minimum $1</option>
+              <option value="paypal">PayPal — minimum $10</option>
+              <option value="crypto_ltc">Crypto — Litecoin (LTC) — minimum $3</option>
+              <option value="crypto_usdt">Crypto — USDT — minimum $3</option>
             </select>
           </div>
           <div>
             <label class="font-bold text-sm" for="wd-amount">Amount (USD)</label>
-            <input id="wd-amount" type="number" min="1" step="0.5" placeholder="5.00" class="w-full border border-slate-300 px-4 py-3 mt-1">
+            <input id="wd-amount" type="number" min="3" step="0.5" placeholder="10.00" class="w-full border border-slate-300 px-4 py-3 mt-1">
             <p class="text-xs text-slate-500 mt-1">Your level caps each withdrawal — see <a class="underline" href="levels.html">levels</a>. Amounts are taken from your coin balance (1,000 coins = $1).</p>
           </div>
           <div>
@@ -64,12 +64,12 @@
       <div class="card p-5">
         <h3 class="font-black text-lg">🏆 Your level</h3>
         <div id="wd-level" class="text-sm text-slate-600 mt-1"></div>
-        <a href="levels.html" class="text-violet-700 font-bold text-sm underline">How levels work →</a>
+        <a href="levels.html" class="text-emerald-700 font-bold text-sm underline">How levels work →</a>
       </div>
       <div class="card p-5">
         <h3 class="font-black text-lg">📅 Payout schedule</h3>
         <ul class="text-sm text-slate-600 mt-2 space-y-1">
-          <li>✅ Request anytime (min $5 PayPal / $1 crypto)</li>
+          <li>✅ Request anytime (min $10 PayPal / $3 crypto)</li>
           <li>🔍 First withdrawal: manual review, 24–72h</li>
           <li>📦 Payouts processed Tue &amp; Fri</li>
           <li>🛡️ Daily payout cap keeps payouts funded</li>

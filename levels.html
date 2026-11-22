@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Levels — Level Up &amp; Withdraw More | SurveyCoins</title>
-<meta name="description" content="SurveyCoins levels: complete offers to level up and raise your per-withdrawal limit — $5 at Level 1, $10 at Level 2, $25 at Level 3. Gradual, fair, no bulk payouts.">
+<meta name="description" content="SurveyCoins levels: complete offers to level up and raise your per-withdrawal limit — $10 at Level 1, $25 at Level 2, $50 at Level 3. Gradual, fair, no bulk payouts.">
 <meta property="og:title" content="Levels — Level Up &amp; Withdraw More | SurveyCoins">
 <meta property="og:description" content="Complete offers, level up, withdraw more per request.">
 <meta property="og:type" content="website">
@@ -14,31 +14,31 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css?v=3">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 <div id="site-header"></div>
 
 <main class="max-w-6xl mx-auto px-4 py-6">
-  <section class="rounded-3xl p-6 md:p-8 text-white shadow-xl text-center" style="background: linear-gradient(135deg,#f59e0b,#db2777 60%,#7c3aed)">
+  <section class="rounded-3xl p-6 md:p-8 text-white shadow-xl text-center" style="background: linear-gradient(135deg,#047857,#0d9488 60%,#10b981)">
     <h1 class="text-3xl md:text-4xl font-black">🏆 Levels — earn trust, withdraw more</h1>
-    <p class="mt-2 font-bold text-white/90 max-w-xl mx-auto">Everyone starts at $5 per withdrawal. Complete offers, level up, and unlock bigger withdrawals. It keeps payouts fair — and keeps the site paying everyone on time.</p>
+    <p class="mt-2 font-bold text-white/90 max-w-xl mx-auto">Everyone starts at $10 per withdrawal. Complete offers, level up, and unlock bigger withdrawals. It keeps payouts fair — and keeps the site paying everyone on time.</p>
   </section>
 
   <div class="grid gap-4 md:grid-cols-3 mt-4">
     <div class="card card-hover earn-card p-6">
-      <div class="flex justify-between items-start"><span class="text-4xl">🌱</span><span class="badge badge-violet">START HERE</span></div>
+      <div class="flex justify-between items-start"><span class="text-4xl">🌱</span><span class="badge badge-teal">START HERE</span></div>
       <h2 class="font-black text-xl mt-2">Level 1 · Newcomer</h2>
-      <div class="earn-amount mt-2">up to <span class="cur">$</span>5 <span class="text-sm font-bold text-slate-500">per withdrawal</span></div>
+      <div class="earn-amount mt-2">up to <span class="cur">$</span>10 <span class="text-sm font-bold text-slate-500">per withdrawal</span></div>
       <p class="text-sm text-slate-600 mt-2">0 offers completed. First withdrawal is manually reviewed within 24–72 hours.</p>
       <div class="progress-track mt-4"><div class="progress-fill" style="width: 100%"></div></div>
       <p class="text-xs font-bold text-slate-500 mt-1">You start here</p>
     </div>
     <div class="card card-hover earn-card p-6">
-      <div class="flex justify-between items-start"><span class="text-4xl">🔥</span><span class="badge badge-pink">$10 EARNED</span></div>
+      <div class="flex justify-between items-start"><span class="text-4xl">🔥</span><span class="badge badge-green">$10 EARNED</span></div>
       <h2 class="font-black text-xl mt-2">Level 2 · Regular</h2>
-      <div class="earn-amount mt-2">up to <span class="cur">$</span>10 <span class="text-sm font-bold text-slate-500">per withdrawal</span></div>
+      <div class="earn-amount mt-2">up to <span class="cur">$</span>25 <span class="text-sm font-bold text-slate-500">per withdrawal</span></div>
       <p class="text-sm text-slate-600 mt-2">Earn $10 from offers and surveys. Withdrawals get faster after your first manual review.</p>
       <div class="progress-track mt-4"><div class="progress-fill" style="width: 45%"></div></div>
       <p class="text-xs font-bold text-slate-500 mt-1">$10 earned to unlock</p>
@@ -46,7 +46,7 @@
     <div class="card card-hover earn-card p-6">
       <div class="flex justify-between items-start"><span class="text-4xl">👑</span><span class="badge badge-amber">$50 EARNED</span></div>
       <h2 class="font-black text-xl mt-2">Level 3 · Pro</h2>
-      <div class="earn-amount mt-2">up to <span class="cur">$</span>25 <span class="text-sm font-bold text-slate-500">per withdrawal</span></div>
+      <div class="earn-amount mt-2">up to <span class="cur">$</span>50 <span class="text-sm font-bold text-slate-500">per withdrawal</span></div>
       <p class="text-sm text-slate-600 mt-2">Earn $50 from offers and surveys. Our most trusted members — fastest payouts, highest limits.</p>
       <div class="progress-track mt-4"><div class="progress-fill" style="width: 15%"></div></div>
       <p class="text-xs font-bold text-slate-500 mt-1">$50 earned to unlock</p>
@@ -59,7 +59,7 @@
       <li><b>Gradual by design:</b> you earn over days of activity and withdraw in batches — never one big bulk wave. That's how the site always has your money ready.</li>
       <li><b>Payout days:</b> Tuesdays and Fridays, with a daily payout cap.</li>
       <li><b>First withdrawal:</b> manual review within 24–72 hours (fraud check). Later ones are faster.</li>
-      <li><b>Minimums:</b> $5 PayPal / $5 gift cards / $1 crypto (LTC/USDT).</li>
+      <li><b>Minimums:</b> $10 PayPal / $3 crypto (LTC/USDT).</li>
     </ul>
     <a href="withdraw.html" class="btn-gradient inline-block px-6 py-3 text-sm mt-4">Go to withdraw →</a>
   </section>
