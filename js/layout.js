@@ -30,22 +30,27 @@ const Layout = (() => {
       const active = page === n.href ? 'bg-white/25 text-white font-bold' : 'text-white/85 hover:text-white hover:bg-white/10';
       return `<a href="${n.href}" class="${active} px-2.5 py-1.5 rounded-full text-sm whitespace-nowrap transition">${n.label}</a>`;
     }).join('');
-    const balanceChip = balance && balance.connected
+    const signedIn = balance && balance.connected && !balance.needsAuth;
+    const balanceChip = signedIn
       ? `<a href="withdraw.html" class="coin-chip text-sm" title="Your balance — 1,000 coins = $1">
            <span class="coin-bob">🪙</span><span>${balance.coins.toLocaleString()} coins</span>
            <span class="text-xs font-bold opacity-80">($${balance.usd.toFixed(2)})</span>
          </a>`
       : `<a href="auth.html" class="btn-sunny text-sm px-4 py-1.5">Join free 🎉</a>`;
+    const signOutBtn = signedIn
+      ? `<button id="signout-btn" class="text-white/85 hover:text-white text-sm font-bold px-2 py-1.5" title="Sign out">Sign out</button>`
+      : '';
     return `
-    <header class="sticky top-0 z-40 shadow-lg" style="background: linear-gradient(90deg,#6d28d9,#a21caf 55%,#db2777)">
+    <header class="sticky top-0 z-40 shadow-lg" style="background: linear-gradient(90deg,#0f766e,#0d9488 55%,#059669)">
       <div class="max-w-6xl mx-auto px-4 py-3 flex items-center gap-4">
         <a href="index.html" class="flex items-center gap-2 shrink-0">
-          <span class="text-2xl coin-bob">🪙</span>
+          <span class="text-2xl coin-bob">📋</span>
           <span class="font-black text-lg tracking-tight text-white">Survey<span class="text-amber-300">Coins</span></span>
         </a>
         <nav class="hidden lg:flex items-center gap-1 overflow-x-auto">${links}</nav>
         <div class="ml-auto flex items-center gap-2">
           ${balanceChip}
+          ${signOutBtn}
           <button id="mobile-nav-btn" class="lg:hidden text-2xl px-2 text-white" aria-label="Menu">☰</button>
         </div>
       </div>
@@ -55,7 +60,7 @@ const Layout = (() => {
 
   function footerHTML() {
     return `
-    <footer class="mt-12 text-violet-100" style="background: linear-gradient(180deg,#4c1d95,#2e1065)">
+    <footer class="mt-12 text-teal-100" style="background: linear-gradient(180deg,#134e4a,#042f2e)">
       <div class="max-w-6xl mx-auto px-4 py-8 grid gap-6 md:grid-cols-4 text-sm">
         <div>
           <div class="text-white font-bold mb-2">🪙 SurveyCoins</div>
@@ -118,6 +123,8 @@ const Layout = (() => {
     const btn = document.getElementById('mobile-nav-btn');
     const nav = document.getElementById('mobile-nav');
     if (btn && nav) btn.addEventListener('click', () => nav.classList.toggle('hidden'));
+    const signOut = document.getElementById('signout-btn');
+    if (signOut) signOut.addEventListener('click', async () => { await Backend.signOut(); location.reload(); });
     const closeBtn = document.getElementById('sticky-ad-close');
     if (closeBtn) closeBtn.addEventListener('click', () => document.getElementById('sticky-ad').classList.add('hidden'));
   }

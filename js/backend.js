@@ -165,7 +165,12 @@ const Backend = (() => {
     if (amountUsd > bal.usd) return { ok: false, error: 'Amount exceeds your balance.' };
     const lvl = await getLevelInfo();
     if (amountUsd > lvl.current.maxWithdrawUsd) {
-      return { ok: false, error: `Your level (${lvl.current.name}) can withdraw up to $${lvl.current.maxWithdrawUsd} per request. Earn $${(lvl.next.minCoinsEarned - lvl.lifetimeCoins) / cfg.coinsPerDollar} more to reach Level ${lvl.next.level}.` };
+      // lvl.next is null at the top level — guard it (was a crash: reading
+      // minCoinsEarned of null when a Level 3 user exceeded the cap).
+      const nextMsg = lvl.next
+        ? ` Earn $${((lvl.next.minCoinsEarned - lvl.lifetimeCoins) / cfg.coinsPerDollar).toFixed(2)} more to reach Level ${lvl.next.level}.`
+        : ' You are already at the top level.';
+      return { ok: false, error: `Your level (${lvl.current.name}) can withdraw up to $${lvl.current.maxWithdrawUsd} per request.${nextMsg}` };
     }
     if (!address) return { ok: false, error: 'Please enter your PayPal email or crypto wallet address.' };
     const coins = Math.round(amountUsd * cfg.coinsPerDollar);

@@ -25,11 +25,11 @@ const SITE_CONFIG = {
   checkinStreakBonus: 10,        // extra coins per consecutive day, capped at +100
 
   withdrawals: {
-    paypalMinUsd: 5,
-    cryptoMinUsd: 1,             // LTC / USDT
-    // NOTE: gift-card withdrawals are in the report spec but NOT in the shared
-    // schema's method check (paypal | crypto_ltc | crypto_usdt). Adding them
-    // needs a one-line schema change — see INTEGRATION_STATUS.md.
+    paypalMinUsd: 10,
+    cryptoMinUsd: 3,             // LTC / USDT
+    // NOTE: gift-card withdrawals are NOT offered on this site — the only
+    // methods are PayPal and crypto (paypal | crypto_ltc | crypto_usdt).
+    // Page copy must not promise a gift-card minimum.
     firstHoldHoursMin: 24,       // first withdrawal: manual review, 24–72h hold
     firstHoldHoursMax: 72,
     batchDays: ['Tue', 'Fri'],   // payouts processed in batches, 2x/week
@@ -40,9 +40,9 @@ const SITE_CONFIG = {
   // LIFETIME COINS EARNED (shared schema refresh_user_level()): L2 at 10,000
   // coins ($10 earned), L3 at 50,000 ($50 earned). No fast-path promise.
   levels: [
-    { level: 1, name: 'Newcomer', minCoinsEarned: 0,     maxWithdrawUsd: 5  },
-    { level: 2, name: 'Regular',  minCoinsEarned: 10000, maxWithdrawUsd: 10 },
-    { level: 3, name: 'Pro',      minCoinsEarned: 50000, maxWithdrawUsd: 25 },
+    { level: 1, name: 'Newcomer', minCoinsEarned: 0,     maxWithdrawUsd: 10 },
+    { level: 2, name: 'Regular',  minCoinsEarned: 10000, maxWithdrawUsd: 25 },
+    { level: 3, name: 'Pro',      minCoinsEarned: 50000, maxWithdrawUsd: 50 },
   ],
 
   // ---- Shared Supabase backend (SAME project as sites #1 and #3) ----

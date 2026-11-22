@@ -11,16 +11,23 @@ const Rewards = (() => {
   async function renderBalance(selector) {
     const el = document.querySelector(selector);
     if (!el) return;
+    // Balance renders on dark hero gradients (dashboard / withdraw) AND on
+    // white .card panels (surveys, games, trials, videos, music, cashback) —
+    // pick text colors that are readable on the actual background.
+    const onLight = el.classList.contains('card') || !!el.closest('.card');
+    const big = onLight ? 'text-slate-900' : 'text-white';
+    const sub = onLight ? 'text-slate-600' : 'text-white/90';
+    const faint = onLight ? 'text-slate-500' : 'text-white/80';
     const bal = await Backend.getBalance();
     if (!bal.connected) {
-      el.innerHTML = `<div class="text-sm text-slate-500">Balance connects once the backend is live. <a class="underline" href="auth.html">Create your free account</a> to start earning.</div>`;
+      el.innerHTML = `<div class="text-sm ${sub}">Balance connects once the backend is live. <a class="underline" href="auth.html">Create your free account</a> to start earning.</div>`;
       return;
     }
     const lvl = await Backend.getLevelInfo();
     el.innerHTML = `
-      <div class="text-3xl font-extrabold">🪙 ${fmtCoins(bal.coins)} <span class="text-lg text-white/80 font-bold">coins</span></div>
-      <div class="font-bold text-white/90">= ${fmtUsd(bal.coins)} · Level ${lvl.current.level} ${lvl.current.name} · max $${lvl.current.maxWithdrawUsd} per withdrawal</div>
-      ${lvl.next ? `<div class="text-sm font-bold text-white/80 mt-1">Earn $${((lvl.next.minCoinsEarned - lvl.lifetimeCoins) / cfg.coinsPerDollar).toFixed(2)} more to reach Level ${lvl.next.level} ($${lvl.next.maxWithdrawUsd} per withdrawal).</div>` : `<div class="text-sm font-bold text-white/80 mt-1">Top level reached — max $${lvl.current.maxWithdrawUsd} per withdrawal.</div>`}`;
+      <div class="text-3xl font-extrabold ${big}">🪙 ${fmtCoins(bal.coins)} <span class="text-lg ${faint} font-bold">coins</span></div>
+      <div class="font-bold ${sub}">= ${fmtUsd(bal.coins)} · Level ${lvl.current.level} ${lvl.current.name} · max $${lvl.current.maxWithdrawUsd} per withdrawal</div>
+      ${lvl.next ? `<div class="text-sm font-bold ${faint} mt-1">Earn $${((lvl.next.minCoinsEarned - lvl.lifetimeCoins) / cfg.coinsPerDollar).toFixed(2)} more to reach Level ${lvl.next.level} ($${lvl.next.maxWithdrawUsd} per withdrawal).</div>` : `<div class="text-sm font-bold ${faint} mt-1">Top level reached — max $${lvl.current.maxWithdrawUsd} per withdrawal.</div>`}`;
   }
 
   async function renderTransactions(selector, limit = 10) {
