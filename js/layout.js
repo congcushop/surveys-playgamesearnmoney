@@ -47,7 +47,7 @@ const Layout = (() => {
           <span class="text-2xl coin-bob">📋</span>
           <span class="font-black text-lg tracking-tight text-white">Survey<span class="text-amber-300">Coins</span></span>
         </a>
-        <nav class="hidden lg:flex items-center gap-1 overflow-x-auto">${links}</nav>
+        <nav class="hidden lg:flex flex-1 min-w-0 items-center gap-1 overflow-x-auto">${links}</nav>
         <div class="ml-auto flex items-center gap-2">
           ${balanceChip}
           ${signOutBtn}
