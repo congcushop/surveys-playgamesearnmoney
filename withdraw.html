@@ -29,7 +29,7 @@
     <div class="lg:col-span-2 space-y-4">
       <section class="rounded-3xl p-6 md:p-8 text-white shadow-xl pop-in" style="background: linear-gradient(135deg,#059669,#0d9488 60%,#0f766e)">
         <div class="text-sm font-bold opacity-90">YOUR BALANCE</div>
-        <div data-balance class="mt-1"></div>
+        <div data-balance class="mt-1"><div class="text-3xl font-extrabold text-white">🪙 … <span class="text-lg text-white/80 font-bold">coins</span></div></div>
         <p class="text-sm font-bold text-white/90 mt-3">💸 Payouts are processed in batches on <b>Tuesdays and Fridays</b>. First withdrawal: manual review within 24–72 hours. No fees to request — PayPal takes its usual ~2% on its side.</p>
       </section>
 
@@ -60,7 +60,7 @@
 
       <section class="card p-6">
         <h2 class="font-black text-xl">Your withdrawal requests</h2>
-        <div id="wd-history" class="mt-2 text-sm text-slate-500">Sign in to see your withdrawal history.</div>
+        <div id="wd-history" class="mt-2 text-sm text-slate-500">Loading your withdrawal history…</div>
       </section>
     </div>
 
@@ -100,13 +100,19 @@ App.boot({ balance: true });
   const lvl = await Backend.getLevelInfo();
   const el = document.getElementById('wd-level');
   if (el) el.innerHTML = `Level ${lvl.current.level} · <b>${lvl.current.name}</b> — up to <b>$${lvl.current.maxWithdrawUsd}</b> per withdrawal. ${lvl.next ? `Earn $${((lvl.next.minCoinsEarned - lvl.lifetimeCoins) / 1000).toFixed(2)} more for Level ${lvl.next.level} ($${lvl.next.maxWithdrawUsd}).` : 'Top level reached.'}`;
-  const hist = await Backend.getWithdrawals();
-  const histEl = document.getElementById('wd-history');
-  if (histEl) {
+  async function renderHistory() {
+    const histEl = document.getElementById('wd-history');
+    if (!histEl) return;
+    // "Sign in…" is only shown when there is REALLY no user — never as a
+    // placeholder while the session is still loading.
+    const user = await Backend.getUser();
+    if (!user) { histEl.textContent = 'Sign in to see your withdrawal history.'; return; }
+    const hist = await Backend.getWithdrawals();
     if (!hist.connected) histEl.textContent = 'Withdrawal history will show here once the backend is live.';
     else if (!hist.rows.length) histEl.textContent = 'No withdrawal requests yet.';
     else histEl.innerHTML = hist.rows.map(w => `<div class="flex justify-between py-2 border-b border-slate-100"><span>$${Number(w.amount_usd).toFixed(2)} via ${w.method}</span><span class="badge ${w.status === 'paid' ? 'badge-green' : 'badge-amber'}">${w.status}</span></div>`).join('');
   }
+  await renderHistory();
   const form = document.getElementById('withdraw-form');
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -118,7 +124,7 @@ App.boot({ balance: true });
     });
     out.textContent = res.ok ? ('✓ ' + (res.note || 'Request received.')) : ('✕ ' + (res.error || 'Request failed.'));
     out.className = 'text-sm font-bold ' + (res.ok ? 'text-green-600' : 'text-red-500');
-    if (res.ok) { await Rewards.renderBalance('[data-balance]'); form.reset(); }
+    if (res.ok) { await Rewards.renderBalance('[data-balance]'); await renderHistory(); form.reset(); }
   });
 })();
 </script>
