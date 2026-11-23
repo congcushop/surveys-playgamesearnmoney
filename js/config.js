@@ -49,8 +49,8 @@ const SITE_CONFIG = {
   // Fill in once the shared Supabase project is created. Until then the site
   // runs in "backend connecting" mode — no fake balances, no fake earnings.
   supabase: {
-    url: '',      // e.g. https://xyzcompany.supabase.co
-    anonKey: '',  // publishable key only — NEVER the service_role key
+    url: 'https://hqkjcwjqxhbhenvanteu.supabase.co',      // e.g. https://xyzcompany.supabase.co
+    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhxa2pjd2pxeGhiaGVudmFudGV1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTUzODUxMjEsImV4cCI6MjExMDk2MTEyMX0.y_J73wKX30ZSkB6iXtLpm5dvB3P_jpbHJOQzdC4rbGY',  // publishable key only — NEVER the service_role key
   },
   // Edge Function that receives offerwall postbacks (deployed once, shared).
   postbackUrl: '', // e.g. https://xyzcompany.supabase.co/functions/v1/offerwall-postback
