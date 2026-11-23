@@ -29,11 +29,11 @@
     <div class="lg:col-span-2 space-y-4">
       <section class="rounded-3xl p-6 md:p-8 text-white shadow-xl pop-in" style="background: linear-gradient(135deg,#059669,#0d9488 60%,#0f766e)">
         <div class="text-sm font-bold opacity-90">YOUR BALANCE</div>
-        <div data-balance class="mt-1"><div class="text-3xl font-extrabold text-white">🪙 … <span class="text-lg text-white/80 font-bold">coins</span></div></div>
+        <div data-balance data-auth-gate class="mt-1"><div class="text-3xl font-extrabold text-white">🪙 … <span class="text-lg text-white/80 font-bold">coins</span></div></div>
         <p class="text-sm font-bold text-white/90 mt-3">💸 Payouts are processed in batches on <b>Tuesdays and Fridays</b>. First withdrawal: manual review within 24–72 hours. No fees to request — PayPal takes its usual ~2% on its side.</p>
       </section>
 
-      <section class="card p-6">
+      <section class="card p-6" data-user-only>
         <h2 class="font-black text-2xl">Request a withdrawal</h2>
         <form id="withdraw-form" class="mt-4 space-y-4 max-w-md">
           <div>
@@ -58,14 +58,19 @@
         </form>
       </section>
 
-      <section class="card p-6">
+      <section class="card p-6" data-guest-only>
+        <h2 class="font-black text-2xl">Request a withdrawal</h2>
+        <p class="text-sm text-slate-600 mt-2">Sign in to request a withdrawal. <a class="underline font-bold text-emerald-700" href="auth.html">Join free →</a></p>
+      </section>
+
+      <section class="card p-6" data-user-only>
         <h2 class="font-black text-xl">Your withdrawal requests</h2>
         <div id="wd-history" class="mt-2 text-sm text-slate-500">Loading your withdrawal history…</div>
       </section>
     </div>
 
     <aside class="space-y-4">
-      <div class="card p-5">
+      <div class="card p-5" data-user-only>
         <h3 class="font-black text-lg">🏆 Your level</h3>
         <div id="wd-level" class="text-sm text-slate-600 mt-1"></div>
         <a href="levels.html" class="text-emerald-700 font-bold text-sm underline">How levels work →</a>

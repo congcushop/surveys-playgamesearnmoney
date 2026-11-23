@@ -33,16 +33,17 @@
   <div class="grid gap-4 md:grid-cols-3 mt-4">
     <div class="card p-6 md:col-span-2">
       <h2 class="font-black text-xl">Your referral link</h2>
-      <div class="flex flex-wrap gap-2 mt-3">
+      <div class="flex flex-wrap gap-2 mt-3" data-user-only>
         <input id="ref-link" readonly class="flex-1 min-w-[220px] border border-slate-300 px-4 py-3 font-bold text-sm" value="Sign in to get your referral link.">
         <button id="ref-copy" class="btn-gradient px-6 py-3 text-sm">Copy link 📋</button>
       </div>
-      <div class="grid grid-cols-3 gap-3 mt-6 text-center">
+      <p class="text-sm text-slate-600 mt-3" data-guest-only>Sign in to get your referral link. <a class="underline font-bold text-emerald-700" href="auth.html">Join free →</a></p>
+      <div class="grid grid-cols-3 gap-3 mt-6 text-center" data-user-only>
         <div class="bg-emerald-50 rounded-2xl p-4"><div id="ref-count" class="text-2xl font-black">0</div><div class="text-xs font-bold text-slate-500">FRIENDS JOINED</div></div>
         <div class="bg-emerald-50 rounded-2xl p-4"><div id="ref-earned" class="text-2xl font-black">0</div><div class="text-xs font-bold text-slate-500">COINS EARNED</div></div>
         <div class="bg-emerald-50 rounded-2xl p-4"><div class="text-2xl font-black">10%</div><div class="text-xs font-bold text-slate-500">FOREVER RATE</div></div>
       </div>
-      <p class="text-xs text-slate-500 mt-4">Your code: <b id="ref-code">—</b>. Referral earnings are credited automatically when your referrals complete offers. No limit on how many friends you invite. Fake referrals, bots and self-referrals are banned and forfeit earnings.</p>
+      <p class="text-xs text-slate-500 mt-4" data-user-only>Your code: <b id="ref-code">—</b>. Referral earnings are credited automatically when your referrals complete offers. No limit on how many friends you invite. Fake referrals, bots and self-referrals are banned and forfeit earnings.</p>
     </div>
     <div class="card p-6">
       <h2 class="font-black text-xl">💡 Where to share</h2>

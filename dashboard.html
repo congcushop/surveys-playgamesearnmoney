@@ -30,7 +30,7 @@
       <!-- BALANCE HERO -->
       <section class="rounded-3xl p-6 md:p-8 text-white shadow-xl pop-in" style="background: linear-gradient(135deg,#0d9488,#10b981 60%,#059669)">
         <div class="text-sm font-bold opacity-90">YOUR BALANCE</div>
-        <div data-balance class="mt-1"><div class="text-3xl font-extrabold text-white">🪙 … <span class="text-lg text-white/80 font-bold">coins</span></div></div>
+        <div data-balance data-auth-gate class="mt-1"><div class="text-3xl font-extrabold text-white">🪙 … <span class="text-lg text-white/80 font-bold">coins</span></div></div>
         <div class="flex flex-wrap gap-2 mt-5">
           <a href="withdraw.html" class="bg-white text-emerald-800 font-extrabold px-5 py-2.5 rounded-full text-sm shadow">Withdraw 💸</a>
           <a href="surveys.html" class="bg-white/20 text-white font-extrabold px-5 py-2.5 rounded-full text-sm border border-white/40">Take a survey 📋</a>
@@ -39,14 +39,22 @@
 
       <!-- CHECK-IN + LEVEL -->
       <section class="grid sm:grid-cols-2 gap-4">
-        <div class="card p-5">
+        <div class="card p-5" data-user-only>
           <div class="flex items-center justify-between">
             <h3 class="font-black text-lg">🔥 Daily check-in</h3>
-            <span class="badge badge-amber">+10 coins/day</span>
+            <span class="badge badge-amber">Once a day</span>
           </div>
-          <p class="text-sm text-slate-600 mt-1">Come back every day — your streak grows your bonus.</p>
+          <p class="text-sm text-slate-600 mt-1">Check in once a day — the same check-in is shared across our 3 sites. A 7-day streak earns a 100-coin bonus. The exact amount is shown when you claim.</p>
           <button id="checkin-btn" class="btn-sunny px-5 py-2.5 text-sm mt-3">Check in now</button>
           <p id="checkin-result" class="text-sm font-bold text-green-600 mt-2"></p>
+        </div>
+        <div class="card p-5" data-guest-only>
+          <div class="flex items-center justify-between">
+            <h3 class="font-black text-lg">🔥 Daily check-in</h3>
+            <span class="badge badge-amber">Once a day</span>
+          </div>
+          <p class="text-sm text-slate-600 mt-1">Check in once a day for free coins — a 7-day streak earns a 100-coin bonus.</p>
+          <a href="auth.html" class="btn-sunny px-5 py-2.5 text-sm mt-3 inline-block">Log in to check in</a>
         </div>
         <div class="card p-5">
           <h3 class="font-black text-lg">🏆 Your level</h3>
