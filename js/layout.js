@@ -109,22 +109,55 @@ const Layout = (() => {
     return `<div class="bg-red-600 text-white text-center text-sm font-bold py-2 px-4">LOCAL TEST MODE — no real coins, no real payouts. Add ?localtest=1 only for testing.</div>`;
   }
 
-  async function init() {
+  function loadingHeaderHTML() {
+    // Neutral loading state: never show the logged-out "Join free" button
+    // (or a balance) before the session is known — that was the flicker.
+    return `
+    <header class="sticky top-0 z-40 shadow-lg" style="background: linear-gradient(90deg,#0f766e,#0d9488 55%,#059669)">
+      <div class="max-w-6xl mx-auto px-4 py-3 flex items-center gap-4">
+        <a href="index.html" class="flex items-center gap-2 shrink-0">
+          <span class="text-2xl coin-bob">📋</span>
+          <span class="font-black text-lg tracking-tight text-white">Survey<span class="text-amber-300">Coins</span></span>
+        </a>
+        <div class="ml-auto flex items-center gap-2">
+          <span class="text-white/70 text-sm px-4 py-1.5">…</span>
+        </div>
+      </div>
+    </header>`;
+  }
+
+  async function renderHeader() {
     const headerEl = document.getElementById('site-header');
-    const footerEl = document.getElementById('site-footer');
+    if (!headerEl) return;
     let balance = null;
     try {
-      const st = Backend.init();
-      if (st.localTest && headerEl) headerEl.insertAdjacentHTML('beforebegin', testBannerHTML());
       if (Backend.connected()) balance = await Backend.getBalance();
-    } catch (e) { /* backend unavailable — header renders signed-out state */ }
-    if (headerEl) headerEl.innerHTML = headerHTML(balance);
-    if (footerEl) footerEl.innerHTML = footerHTML();
+    } catch (e) { /* backend unavailable — header keeps the loading state */ }
+    headerEl.innerHTML = headerHTML(balance);
+    bindHeaderButtons();
+  }
+
+  function bindHeaderButtons() {
     const btn = document.getElementById('mobile-nav-btn');
     const nav = document.getElementById('mobile-nav');
     if (btn && nav) btn.addEventListener('click', () => nav.classList.toggle('hidden'));
     const signOut = document.getElementById('signout-btn');
     if (signOut) signOut.addEventListener('click', async () => { await Backend.signOut(); location.reload(); });
+  }
+
+  async function init() {
+    const headerEl = document.getElementById('site-header');
+    const footerEl = document.getElementById('site-footer');
+    const st = Backend.init();
+    if (st.localTest && headerEl) headerEl.insertAdjacentHTML('beforebegin', testBannerHTML());
+    // Loading header first (no wrong logged-out state), real header once
+    // the session is known.
+    if (headerEl) headerEl.innerHTML = loadingHeaderHTML();
+    if (footerEl) footerEl.innerHTML = footerHTML();
+    await renderHeader();
+    // Re-render when the auth state settles/changes (covers a session that
+    // restores a moment after the first render).
+    Backend.onAuthChange(() => { renderHeader(); });
     const closeBtn = document.getElementById('sticky-ad-close');
     if (closeBtn) closeBtn.addEventListener('click', () => document.getElementById('sticky-ad').classList.add('hidden'));
   }

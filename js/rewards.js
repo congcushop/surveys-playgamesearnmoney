@@ -18,11 +18,21 @@ const Rewards = (() => {
     const big = onLight ? 'text-slate-900' : 'text-white';
     const sub = onLight ? 'text-slate-600' : 'text-white/90';
     const faint = onLight ? 'text-slate-500' : 'text-white/80';
+    // Loading state first: the card must never sit empty while the query
+    // runs (that was reported as "no number" in the E2E test).
+    if (!el.dataset.loaded) el.innerHTML = `<div class="text-3xl font-extrabold ${big}">🪙 … <span class="text-lg ${faint} font-bold">coins</span></div>`;
     const bal = await Backend.getBalance();
     if (!bal.connected) {
       el.innerHTML = `<div class="text-sm ${sub}">Balance connects once the backend is live. <a class="underline" href="auth.html">Create your free account</a> to start earning.</div>`;
       return;
     }
+    if (bal.error) {
+      // A failed balance query must be VISIBLE, not a silent empty card.
+      el.innerHTML = `<div class="text-3xl font-extrabold ${big}">🪙 0 <span class="text-lg ${faint} font-bold">coins</span></div>
+      <div class="text-sm font-bold ${sub} mt-1">Balance could not be loaded — please reload the page. (${bal.error})</div>`;
+      return;
+    }
+    el.dataset.loaded = '1';
     const lvl = await Backend.getLevelInfo();
     el.innerHTML = `
       <div class="text-3xl font-extrabold ${big}">🪙 ${fmtCoins(bal.coins)} <span class="text-lg ${faint} font-bold">coins</span></div>
@@ -73,6 +83,16 @@ const Rewards = (() => {
   function bindCheckin(buttonId, resultId) {
     const btn = document.getElementById(buttonId);
     if (!btn) return;
+    // Grey the button out on load when today is already claimed, so the
+    // page never shows a live "Check in" button next to a done message.
+    Backend.checkinStatus().then((st) => {
+      if (st.done) {
+        btn.disabled = true;
+        btn.textContent = `Checked in ✓ +${st.coins} coins`;
+        const out = document.getElementById(resultId);
+        if (out) out.textContent = 'Already checked in today — come back tomorrow!';
+      }
+    }).catch(() => {});
     btn.addEventListener('click', async () => {
       btn.disabled = true;
       const res = await Backend.checkin();
@@ -82,8 +102,12 @@ const Rewards = (() => {
           ? `+${res.coins} coins — see you tomorrow for your streak!`
           : (res.error || 'Check-in failed. Please try again.');
       }
-      if (res.ok) await renderBalance('[data-balance]');
-      btn.disabled = false;
+      if (res.ok) {
+        btn.textContent = `Checked in ✓ +${res.coins} coins`;
+        await renderBalance('[data-balance]');
+      } else {
+        btn.disabled = false;
+      }
     });
   }
 

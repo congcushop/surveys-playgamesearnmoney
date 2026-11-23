@@ -49,7 +49,7 @@ const Backend = (() => {
   async function signUp(email, password) {
     if (localTest) return LocalTest.signUp(email, password);
     if (!supabaseClient) return { ok: false, error: 'Backend not connected yet.' };
-    const { data, error } = await supabaseClient.auth.signUp({ email, password });
+    const { data, error } = await supabaseClient.auth.signUp({ email, password, options: { data: { site: 'surveys' } } });
     if (error) return { ok: false, error: error.message };
     await ensureProfile(data.user);
     return { ok: true, user: data.user };
@@ -64,18 +64,22 @@ const Backend = (() => {
     return { ok: true, user: data.user };
   }
 
-  // Best-effort profile row (site='surveys'). The shared schema has no
-  // insert RLS policy / auth trigger for profiles yet — if this fails, auth
-  // still works and the row is created by the first Edge Function credit.
-  // See INTEGRATION_STATUS.md ("profile creation" TODO).
+  // Profile row: normally created by the auth.users trigger (see shared
+  // fix-checkin-grants.sql). This is only a fallback for rows the trigger
+  // missed — it never overwrites an existing row (so a trigger-generated
+  // referral_code is kept). The referral claim below uses the new INSERT
+  // policy on `referrals` (auth.uid() = referred_id) + GRANT INSERT.
   async function ensureProfile(user) {
     if (!user || !supabaseClient) return;
     try {
+      const { data: existing } = await supabaseClient.from('profiles').select('id').eq('id', user.id).maybeSingle();
+      if (!existing) {
+        await supabaseClient.from('profiles').insert({
+          id: user.id, email: user.email, site: 'surveys',
+          referral_code: user.id.slice(0, 8).toUpperCase(),
+        });
+      }
       const ref = (() => { try { return localStorage.getItem('sc_ref'); } catch (e) { return null; } })();
-      await supabaseClient.from('profiles').upsert({
-        id: user.id, email: user.email, site: 'surveys',
-        referral_code: user.id.slice(0, 8),
-      }, { onConflict: 'id', ignoreDuplicates: true });
       if (ref) {
         const { data } = await supabaseClient.from('profiles').select('id').eq('referral_code', ref).single();
         if (data && data.id !== user.id) {
@@ -86,24 +90,39 @@ const Backend = (() => {
     } catch (e) { /* best-effort only */ }
   }
 
+  // Re-render hook for auth changes (INITIAL_SESSION / SIGNED_IN /
+  // SIGNED_OUT). Layout subscribes so the header never stays stuck in the
+  // wrong (logged-out) state when the session restores late.
+  function onAuthChange(cb) {
+    if (!supabaseClient) return () => {};
+    const { data } = supabaseClient.auth.onAuthStateChange((_event, session) => cb(session));
+    return () => { try { data.subscription.unsubscribe(); } catch (e) {} };
+  }
+
   async function signOut() {
     if (localTest) return LocalTest.signOut();
     if (supabaseClient) await supabaseClient.auth.signOut();
   }
 
-  // Balance = sum of the append-only ledger (never a mutable counter).
+  // Balance = the derived user_balances view (ONE query: balance + lifetime
+  // + level). Never sum the whole ledger client-side on every render.
   async function getBalance() {
     if (localTest) return LocalTest.getBalance();
     if (!supabaseClient) return { connected: false, coins: 0, usd: 0 };
     const user = await getUser();
     if (!user) return { connected: true, coins: 0, usd: 0, needsAuth: true };
     const { data, error } = await supabaseClient
-      .from('coin_transactions')
-      .select('amount_coins')
-      .eq('user_id', user.id);
+      .from('user_balances')
+      .select('balance_coins, lifetime_coins_earned, level')
+      .eq('user_id', user.id)
+      .maybeSingle();
     if (error) return { connected: true, coins: 0, usd: 0, error: error.message };
-    const coins = data.reduce((sum, row) => sum + (row.amount_coins || 0), 0);
-    return { connected: true, coins, usd: coins / cfg.coinsPerDollar };
+    const coins = Number((data && data.balance_coins) || 0);
+    return {
+      connected: true, coins, usd: coins / cfg.coinsPerDollar,
+      lifetimeCoins: Number((data && data.lifetime_coins_earned) || 0),
+      level: (data && data.level) || 1,
+    };
   }
 
   async function getTransactions(limit = 20) {
@@ -120,17 +139,16 @@ const Backend = (() => {
     return { connected: true, rows: data || [] };
   }
 
-  // Lifetime coins EARNED (credits only) — the level basis in the shared
-  // schema (refresh_user_level(): L2 at 10,000, L3 at 50,000).
+  // Lifetime coins EARNED — the level basis. Read from the same view as
+  // the balance (one query); the ledger-sum fallback stays for safety.
   async function getLifetimeEarned() {
     if (localTest) return LocalTest.getLifetimeEarned();
     if (!supabaseClient) return 0;
     const user = await getUser();
     if (!user) return 0;
     const { data } = await supabaseClient
-      .from('profiles').select('lifetime_coins_earned').eq('id', user.id).single();
+      .from('user_balances').select('lifetime_coins_earned').eq('user_id', user.id).maybeSingle();
     if (data && typeof data.lifetime_coins_earned === 'number') return data.lifetime_coins_earned;
-    // Fallback: sum positive offer-source ledger rows.
     const { data: rows } = await supabaseClient
       .from('coin_transactions').select('amount_coins, source').eq('user_id', user.id);
     return (rows || []).reduce((s, r) => s + (r.amount_coins > 0 && ['offerwall_gg', 'adgem', 'cpx', 'theoremreach', 'cashback', 'rewarded_video', 'music'].includes(r.source) ? r.amount_coins : 0), 0);
@@ -222,21 +240,33 @@ const Backend = (() => {
     return { connected: true, code, link: `${cfg.baseUrl}/auth.html?ref=${code}`, referrals, earnedCoins };
   }
 
+  // Daily check-in — server-side via the claim_checkin RPC (SECURITY
+  // DEFINER): one row per user per day, coins credited in the ledger by
+  // the function itself. The old code inserted into daily_checkins
+  // directly (42501: no GRANT) and never wrote the ledger row at all.
   async function checkin() {
     if (localTest) return LocalTest.checkin();
     if (!supabaseClient) return { ok: false, error: 'Backend not connected yet.' };
     const user = await getUser();
     if (!user) return { ok: false, error: 'Please sign in first.' };
-    // Idempotent: one check-in row per user per day (unique constraint in SQL).
+    const { data, error } = await supabaseClient.rpc('claim_checkin', { p_site: 'surveys' });
+    if (error) return { ok: false, error: error.message };
+    if (data && data.already) return { ok: false, error: 'Already checked in today — come back tomorrow.' };
+    return { ok: true, coins: (data && data.coins) || cfg.checkinCoins, streak: (data && data.streak) || 1 };
+  }
+
+  // Today's check-in state (for greying out the button on load).
+  async function checkinStatus() {
+    if (localTest) return { done: LocalTest.state().checkinDone, coins: cfg.checkinCoins, streak: 1 };
+    if (!supabaseClient) return { done: false, coins: 0, streak: 0 };
+    const user = await getUser();
+    if (!user) return { done: false, coins: 0, streak: 0 };
     const today = new Date().toISOString().slice(0, 10);
-    const { error } = await supabaseClient.from('daily_checkins').insert({
-      user_id: user.id, checkin_date: today, coins_awarded: cfg.checkinCoins,
-    });
-    if (error) {
-      if (String(error.message).includes('duplicate')) return { ok: false, error: 'Already checked in today — come back tomorrow.' };
-      return { ok: false, error: error.message };
-    }
-    return { ok: true, coins: cfg.checkinCoins };
+    const { data } = await supabaseClient.from('daily_checkins')
+      .select('coins_awarded, streak').eq('user_id', user.id)
+      .eq('checkin_date', today).maybeSingle();
+    if (!data) return { done: false, coins: 0, streak: 0 };
+    return { done: true, coins: data.coins_awarded, streak: data.streak };
   }
 
   // Real payout proofs only — the public payout_proofs table (admin inserts
@@ -315,10 +345,10 @@ const Backend = (() => {
   };
 
   return {
-    init, connected, isLocalTestMode, getSession, getUser,
+    init, connected, isLocalTestMode, getSession, getUser, onAuthChange,
     signUp, signIn, signOut, getBalance, getTransactions, getLifetimeEarned,
     levelFor, getLevelInfo, requestWithdrawal, getWithdrawals,
-    getReferralInfo, checkin, getProofs, getOfferwallUserId,
+    getReferralInfo, checkin, checkinStatus, getProofs, getOfferwallUserId,
   };
 })();
 
