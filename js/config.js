@@ -59,8 +59,8 @@ const SITE_CONFIG = {
   offerwalls: {
     offerwallGG: {
       // Placement iframe URL from the Offerwall.GG dashboard (per placement).
-      // Append &subid=<USER_ID> at runtime — see js/offerwall.js.
-      iframeUrl: '',
+      // Append &userId=<USER_ID> at runtime — see js/offerwall.js.
+      iframeUrl: 'https://offerwall.gg/wall/5cdd431f1439b328ed3d0da1e0990f2a',
     },
     adgem: {
       // AdGem Web Offerwall URL from dashboard.adgem.com (Property -> Web).

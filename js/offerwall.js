@@ -28,7 +28,7 @@ const Offerwall = (() => {
       return;
     }
     const uid = await Backend.getOfferwallUserId();
-    const src = url + (url.includes('?') ? '&' : '?') + 'subid=' + encodeURIComponent(uid || 'guest');
+    const src = url + (url.includes('?') ? '&' : '?') + 'userId=' + encodeURIComponent(uid || 'guest');
     el.innerHTML = `<iframe src="${src}" class="w-full rounded-xl border border-slate-200 bg-white" style="height:720px" title="Offerwall" loading="lazy"></iframe>`;
   }
 
