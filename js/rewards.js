@@ -122,15 +122,25 @@ const Rewards = (() => {
   async function renderReferral() {
     const info = await Backend.getReferralInfo();
     const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
-    set('ref-link', info.link || 'Sign in to get your referral link.');
+    // BUG FIX (23/11): #ref-link is an <input> — textContent does nothing
+    // on inputs, so the link never appeared even when logged in (the code
+    // below it is a <b>, so textContent worked there). Inputs need .value.
+    const linkEl = document.getElementById('ref-link');
+    if (linkEl) linkEl.value = info.link || 'Sign in to get your referral link.';
     set('ref-code', info.code || '—');
     set('ref-count', String(info.referrals || 0));
     set('ref-earned', fmtCoins(info.earnedCoins || 0));
     const copyBtn = document.getElementById('ref-copy');
     if (copyBtn && info.link) {
       copyBtn.addEventListener('click', async () => {
-        try { await navigator.clipboard.writeText(info.link); copyBtn.textContent = 'Copied ✓'; }
-        catch (e) { copyBtn.textContent = 'Copy the link above'; }
+        // Copy exactly what the input shows, so the button can never
+        // disagree with the visible link.
+        const text = (linkEl && linkEl.value) || info.link;
+        try { await navigator.clipboard.writeText(text); copyBtn.textContent = 'Copied ✓'; }
+        catch (e) {
+          try { linkEl.select(); document.execCommand('copy'); copyBtn.textContent = 'Copied ✓'; }
+          catch (e2) { copyBtn.textContent = 'Copy the link above'; }
+        }
       });
     }
   }
