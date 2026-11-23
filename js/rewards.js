@@ -26,6 +26,14 @@ const Rewards = (() => {
       el.innerHTML = `<div class="text-sm ${sub}">Balance connects once the backend is live. <a class="underline" href="auth.html">Create your free account</a> to start earning.</div>`;
       return;
     }
+    if (bal.needsAuth) {
+      // Round-2: a guest has NO balance — never show a fake "0 coins"
+      // (or a level) for someone without an account. The host element is
+      // data-auth-gated in the HTML, so this only renders once the
+      // session is known to be logged-out.
+      el.innerHTML = `<div class="text-sm ${sub}">Sign in to see your balance and start earning. <a class="underline font-bold" href="auth.html">Join free →</a></div>`;
+      return;
+    }
     if (bal.error) {
       // A failed balance query must be VISIBLE, not a silent empty card.
       el.innerHTML = `<div class="text-3xl font-extrabold ${big}">🪙 0 <span class="text-lg ${faint} font-bold">coins</span></div>

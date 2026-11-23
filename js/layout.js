@@ -150,14 +150,28 @@ const Layout = (() => {
     const footerEl = document.getElementById('site-footer');
     const st = Backend.init();
     if (st.localTest && headerEl) headerEl.insertAdjacentHTML('beforebegin', testBannerHTML());
+    // Safety net: if the session check hangs, show guest content after 6s
+    // instead of leaving auth-gated content hidden forever.
+    setTimeout(() => document.body.classList.add('auth-ready'), 6000);
     // Loading header first (no wrong logged-out state), real header once
     // the session is known.
     if (headerEl) headerEl.innerHTML = loadingHeaderHTML();
     if (footerEl) footerEl.innerHTML = footerHTML();
     await renderHeader();
+    // Round-2 FOUC fix: reveal auth-dependent content ONLY once the
+    // session is known — the header already resolved it above via
+    // getBalance(), so this just marks the body for the page content.
+    const u = await Backend.getUser().catch(() => null);
+    document.body.classList.add('auth-ready');
+    document.body.classList.toggle('auth-logged-in', !!u);
     // Re-render when the auth state settles/changes (covers a session that
     // restores a moment after the first render).
-    Backend.onAuthChange(() => { renderHeader(); });
+    Backend.onAuthChange(async () => {
+      renderHeader();
+      const u2 = await Backend.getUser().catch(() => null);
+      document.body.classList.add('auth-ready');
+      document.body.classList.toggle('auth-logged-in', !!u2);
+    });
     const closeBtn = document.getElementById('sticky-ad-close');
     if (closeBtn) closeBtn.addEventListener('click', () => document.getElementById('sticky-ad').classList.add('hidden'));
   }
