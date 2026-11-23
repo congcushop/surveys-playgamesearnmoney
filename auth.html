@@ -60,7 +60,12 @@
 <script src="js/rewards.js?v=4"></script>
 <script src="js/app.js?v=4"></script>
 <script>
-App.boot({});
+App.boot({}).then(() => {
+  // BUG FIX (23/11): a signed-in user clicking a "Start earning" CTA
+  // landed on this auth form instead of earning. If a session already
+  // exists, skip the form and go straight to the dashboard.
+  Backend.getSession().then((s) => { if (s) location.href = 'dashboard.html'; }).catch(() => {});
+});
 (function () {
   let mode = 'signup';
   const form = document.getElementById('auth-form');
