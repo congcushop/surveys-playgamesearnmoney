@@ -10,6 +10,7 @@ const App = (() => {
     if (opts.balance) await Rewards.renderBalance('[data-balance]');
     if (opts.transactions) await Rewards.renderTransactions('[data-transactions]', opts.transactions);
     if (opts.checkin) Rewards.bindCheckin('checkin-btn', 'checkin-result');
+    if (opts.level) await Rewards.renderLevel();
     if (opts.offerwallGG) await Offerwall.mountGG('offerwall-gg');
     if (opts.adgem) await Offerwall.mountAdGem('offerwall-adgem');
     if (opts.cpx) await Routers.mountCPX('router-cpx');

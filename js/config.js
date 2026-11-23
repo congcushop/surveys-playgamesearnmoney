@@ -20,9 +20,12 @@ const SITE_CONFIG = {
   userShare: 0.60,               // user gets 60% of offerwall value, site keeps 40%
   referralRate: 0.10,            // referrer earns 10% of referral earnings, from site margin
   signupBonusCoins: 250,         // $0.25 — LOCKED until first offer completes
-  checkinCoins: 10,              // daily login bonus (shared schema default)
-  checkinStreakDay7Bonus: 100,   // day-7 streak bonus
-  checkinStreakBonus: 10,        // extra coins per consecutive day, capped at +100
+  checkinCoins: 10,              // daily login bonus (shared schema default; fallback when the RPC returns no amount)
+  // NOTE: check-in amounts are paid by the server-side claim_checkin RPC
+  // (surveys: 10 flat, +100 on a 7-day streak). The old
+  // checkinStreakDay7Bonus / checkinStreakBonus keys were removed 23/11:
+  // nothing read them, and a stale local number must never disagree
+  // with what the server actually pays.
 
   withdrawals: {
     paypalMinUsd: 10,
@@ -112,11 +115,42 @@ const SITE_CONFIG = {
   rewardedVideo: { provider: '', unitId: '', coinsPerView: 10 },
 
   // ---- Cashback shopping (Phase 2, installed at launch) ----
-  // Affiliate network links go here once the affiliate accounts exist.
-  // No store is listed until its affiliate deal is real — no fake stores.
+  // LIVE stores — the same 6 approved Rakuten/Impact deals as site #1
+  // (js/config.js cashback.stores). Rates are the approved offer rates —
+  // never invent a rate or a tracking link. Wondershare is approved on
+  // BOTH networks at 30% (Impact Brand 59772 AND Rakuten MID 37160 /
+  // Offer 2137962) — ONE card, using the Rakuten deep link, because the
+  // Impact tracking URL needs an {Ad ID} chosen per asset in the Impact
+  // dashboard and no Ad ID is on file. Do NOT invent an Ad ID.
+  // The user gets 50% of each store's commission as coins.
   cashback: {
-    affiliateNetwork: '', // e.g. 'rakuten' / 'awin' / 'impact' + account id
-    stores: [],            // { name, logo, cashbackPct, affiliateUrl }
+    affiliateNetwork: 'rakuten', // Rakuten (Wondershare also Impact)
+    stores: [
+      { name: "Wondershare", category: "Software", cashbackPct: 30,
+        desc: "Video, PDF & data tools — Dr.Fone Full Toolkit $139.95, Recoverit $79.99, MobileTrans $54.99.",
+        network: "Rakuten + Impact",
+        affiliateUrl: "https://click.linksynergy.com/link?id=%2fg%2fjHJaZtI4&offerid=2137962&type=2&murl=https%3A%2F%2Fwww.wondershare.com" },
+      { name: "Keeper Security", category: "Security Software", cashbackPct: 10,
+        desc: "Password manager & cybersecurity for families and teams. 10% base, up to $5 per action.",
+        network: "Rakuten",
+        affiliateUrl: "https://click.linksynergy.com/link?id=%2fg%2fjHJaZtI4&offerid=2065364&type=2&murl=https%3A%2F%2Fwww.keepersecurity.com" },
+      { name: "Waterdrop Filter", category: "Home & Kitchen", cashbackPct: 8,
+        desc: "Reverse-osmosis & gravity water filters for clean drinking water.",
+        network: "Rakuten",
+        affiliateUrl: "https://click.linksynergy.com/link?id=%2fg%2fjHJaZtI4&offerid=1888875&type=2&murl=https%3A%2F%2Fwww.waterdropfilter.com" },
+      { name: "Easy Plumbing", category: "Home & Garden", cashbackPct: 5,
+        desc: "KOHLER & Moen fixtures, faucets, sinks and bath furniture.",
+        network: "Rakuten",
+        affiliateUrl: "https://click.linksynergy.com/link?id=%2fg%2fjHJaZtI4&offerid=1898982&type=2&murl=https%3A%2F%2Fwww.easyplumbing.com" },
+      { name: "KitchenAid", category: "Appliances", cashbackPct: 2,
+        desc: "Stand mixers & major kitchen appliances.",
+        network: "Rakuten", badge: "Ends 7 Dec 2026",
+        affiliateUrl: "https://click.linksynergy.com/link?id=%2fg%2fjHJaZtI4&offerid=1972089&type=2&murl=https%3A%2F%2Fwww.kitchenaid.com" },
+      { name: "Paw.com", category: "Pet Supplies", cashbackPct: 2,
+        desc: "Pet beds, carriers & accessories.",
+        network: "Rakuten",
+        affiliateUrl: "https://click.linksynergy.com/link?id=%2fg%2fjHJaZtI4&offerid=1783560&type=2&murl=https%3A%2F%2Fwww.paw.com" },
+    ],
   },
 
   // ---- Music lounge (retention only — tiny rewards, NOT a main earner) ----

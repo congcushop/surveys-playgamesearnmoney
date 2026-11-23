@@ -119,6 +119,34 @@ const Rewards = (() => {
     });
   }
 
+  // Dashboard "Your level" card — was hardcoded "Level 1 · Newcomer /
+  // 20%" for every user. Now driven by the same Backend.getLevelInfo()
+  // the balance hero and withdraw page use (lifetime coins earned).
+  // Guests get lifetime 0 → Level 1 at 0%, which is the honest
+  // starting state and matches the card's initial HTML.
+  async function renderLevel() {
+    const labelEl = document.getElementById('dash-level-label');
+    const nextEl = document.getElementById('dash-level-next');
+    const barEl = document.getElementById('dash-level-bar');
+    if (!labelEl && !nextEl && !barEl) return;
+    let lvl;
+    try { lvl = await Backend.getLevelInfo(); }
+    catch (e) { return; } // keep the honest Level 1 initial state on error
+    if (!lvl || !lvl.current) return;
+    if (labelEl) labelEl.textContent = `Level ${lvl.current.level} · ${lvl.current.name}`;
+    let pct = 100;
+    if (lvl.next) {
+      const span = lvl.next.minCoinsEarned - lvl.current.minCoinsEarned;
+      pct = span > 0
+        ? Math.min(100, Math.max(0, ((lvl.lifetimeCoins - lvl.current.minCoinsEarned) / span) * 100))
+        : 100;
+      if (nextEl) nextEl.textContent = `→ Level ${lvl.next.level} at $${(lvl.next.minCoinsEarned / cfg.coinsPerDollar).toFixed(0)} earned`;
+    } else if (nextEl) {
+      nextEl.textContent = `Top level — max $${lvl.current.maxWithdrawUsd} per withdrawal`;
+    }
+    if (barEl) barEl.style.width = `${Math.round(pct)}%`;
+  }
+
   async function renderReferral() {
     const info = await Backend.getReferralInfo();
     const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
@@ -168,7 +196,7 @@ const Rewards = (() => {
     }).join('');
   }
 
-  return { fmtCoins, fmtUsd, renderBalance, renderTransactions, bindCheckin, renderReferral, renderProofs };
+  return { fmtCoins, fmtUsd, renderBalance, renderTransactions, bindCheckin, renderLevel, renderReferral, renderProofs };
 })();
 
 window.Rewards = Rewards;
